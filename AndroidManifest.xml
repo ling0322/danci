@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ling0322.lia"
+    android:versionCode="1"
+    android:versionName="1.0" >
+    <uses-sdk android:minSdkVersion="7" />
+    <application
+        android:label="@string/app_name" 
+        android:icon="@drawable/icon">
+        <activity
+            android:label="@string/app_name"
+            android:name=".LiaActivity" 
+            android:theme="@style/Lia">
+
+        </activity>
+        <activity android:name=".DictionaryActivity" android:theme="@style/Lia" android:label="@string/app_name"></activity> 
+        <activity android:name=".ReciteActivity" android:theme="@style/Lia" android:label="@string/app_name"></activity>
+        <activity android:name=".LiaPreferencesActivity" android:label="@string/app_name"></activity>
+        <activity android:name=".WordListActivity" android:theme="@style/Lia" android:label="@string/app_name"></activity>
+        <activity 
+            android:name=".DefinitionActivity" 
+            android:theme="@style/Lia" 
+            android:label="@string/app_name">
+        </activity>
+        <activity 
+            android:name=".InitActivity" 
+            android:theme="@style/Lia" 
+            android:label="@string/app_name">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>  
+</manifest>
