@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="Reciting">
+        android:title="选项">
         <CheckBoxPreference
             android:title="自动发声"
             android:defaultValue="true"

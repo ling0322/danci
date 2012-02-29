@@ -1,15 +1,9 @@
 package com.ling0322.lia;
 
 
-import java.util.*;
-
-import org.json.*;
-
 import android.app.*;
-import android.graphics.*;
 import android.os.*;
-import android.view.Gravity;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 
 public class DefinitionActivity extends Activity {

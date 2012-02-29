@@ -3,9 +3,7 @@ package com.ling0322.lia;
 
 import java.util.*;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
 import android.app.*;
 import android.graphics.*;

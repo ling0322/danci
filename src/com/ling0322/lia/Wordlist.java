@@ -2,7 +2,6 @@ package com.ling0322.lia;
 
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
@@ -38,6 +37,17 @@ public class Wordlist {
 			return wordlistDbConnMap.get(wordlistName);
 		}
 		
+		if (wordlistName.equals("TOFEL词汇")) {
+			if (wordlistDbConnMap.containsKey(wordlistName) == false)
+				wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Lia.WL_TOFEL_PATH, null));
+			return wordlistDbConnMap.get(wordlistName);
+		}
+		
+		if (wordlistName.equals("GRE词汇")) {
+			if (wordlistDbConnMap.containsKey(wordlistName) == false)
+				wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Lia.WL_GRE_PATH, null));
+			return wordlistDbConnMap.get(wordlistName);
+		}
 		return null;
 	}
 	

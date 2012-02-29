@@ -1,20 +1,23 @@
 package com.ling0322.lia;
 
-import java.io.File;
 import java.util.ArrayList;
 import android.os.Bundle;
 import android.text.*;
 import android.view.*;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.content.Intent;
-import android.database.sqlite.*;
 import android.support.v4.app.*;
 
 
-public class DictionaryActivity extends Fragment implements TextWatcher, OnItemClickListener {
+public class DictionaryActivity 
+    extends Fragment 
+    implements TextWatcher, OnItemClickListener, OnClickListener, OnFocusChangeListener {
 	
-    public ArrayAdapter<String> adapter;
+    public WordlistAdapter adapter;
+    private EditText et = null;
     public ArrayList<String> wordlist;
     private Dict dict12;
 
@@ -50,11 +53,17 @@ public class DictionaryActivity extends Fragment implements TextWatcher, OnItemC
     	super.onActivityCreated(savedInstanceState);
         ListView lv = (ListView)getActivity().findViewById(R.id.listView1);
         
-        EditText et = (EditText)getActivity().findViewById(R.id.editText1);
+        et = (EditText)getActivity().findViewById(R.id.editText1);
         et.addTextChangedListener(this);
+        
+        //
+        // let et select all when user click this EditText 
+        //
+        et.setOnClickListener(this);
+        et.setOnFocusChangeListener(this);
         wordlist =  new ArrayList<String>();
         
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item, wordlist);
+        adapter = new WordlistAdapter(wordlist, getActivity());
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
     }
@@ -74,6 +83,19 @@ public class DictionaryActivity extends Fragment implements TextWatcher, OnItemC
 		Intent it = new Intent(getActivity(), DefinitionActivity.class);
 		it.putExtra("word", wordlist.get(position));
 		getActivity().startActivity(it);
+		
+	}
+
+
+	public void onFocusChange(View view, boolean b) {
+		if (view == et && b == true)
+			et.selectAll();
+	}
+
+	public void onClick(View view) {
+		if (view == et) {
+			et.selectAll();
+		}
 		
 	}
 

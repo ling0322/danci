@@ -1,6 +1,5 @@
 package com.ling0322.lia;
 
-import java.io.*;
 import android.content.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.*;

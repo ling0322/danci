@@ -116,7 +116,7 @@ public class WordListActivity extends Activity implements OnClickListener {
         // initialize the list view
         //
         words = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(this, R.layout.list_item, words);
+        // adapter = new ArrayAdapter<String>(this, R.layout.list_item, words);
         ListView lv = (ListView)findViewById(R.id.listView1);
         lv.setAdapter(adapter);
         

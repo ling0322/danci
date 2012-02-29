@@ -2,7 +2,6 @@ package com.ling0322.lia;
 
 import java.io.*;
 
-import android.app.Activity;
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,7 +28,6 @@ public class ReciteActivity extends Fragment implements OnClickListener {
 	private Button nextButton;
 	private MediaPlayer mp;
 	private SharedPreferences prefs;
-	private SQLiteDatabase pronConn;
 	
 	private void showStartButton() {
 		LinearLayout la = (LinearLayout)getActivity().findViewById(R.id.button_container);
@@ -65,41 +63,18 @@ public class ReciteActivity extends Fragment implements OnClickListener {
 	private final int SECOND = 1;	
 	private int state = FIRST;
 	
-	private void removeTempMp3Files() {
-		File[] fileList = getActivity().getCacheDir().listFiles();
-		for (File file : fileList) {
-			if (file.getName().indexOf(".mp3") != -1)
-				file.delete();
-		}
-	}
-	
-	
 	private void speech(String word) {
+		File speechFile = new File(String.format("%s/%c/%s.mp3", Lia.SPEECH_PATH, word.charAt(0), word));
+		if (speechFile.exists() == false)
+			return ;
+		
 		try {
-			if (pronConn == null)
-				return;
-			//
-			// remove the last temp file
-			//
-			removeTempMp3Files();
 			if (mp.isPlaying()) {
 				mp.stop();
 			}
-			Cursor c = pronConn.rawQuery("select pron from dict where word = ?", new String[] { word });
-			if (c.getCount() == 0) {
-				c.close();
-				return ;
-			}
-			c.moveToFirst();
-			byte[] buffer = c.getBlob(0);
-	        File tempMp3 = File.createTempFile("temp", ".mp3", getActivity().getCacheDir());
-	        FileOutputStream fos = new FileOutputStream(tempMp3);
-	        fos.write(buffer);
-	        fos.close();
-	        FileInputStream fis = new FileInputStream(tempMp3);
 			mp.reset();
 			mp.setVolume(1, 1);
-		    mp.setDataSource(fis.getFD());
+		    mp.setDataSource(speechFile.getAbsolutePath());
 		    mp.prepare();
 		    mp.start();
 			
@@ -196,6 +171,7 @@ public class ReciteActivity extends Fragment implements OnClickListener {
 		} else if (state == SECOND) {
 			recite.answer(false);
 			state = FIRST;
+			showTestButtons();
 			updateDiaplay();
 		}
 	}
@@ -215,7 +191,6 @@ public class ReciteActivity extends Fragment implements OnClickListener {
 
     public void onDetach() {
     	super.onDetach();
-    	pronConn.close();
 
     }
     
@@ -225,11 +200,6 @@ public class ReciteActivity extends Fragment implements OnClickListener {
     	//
     	// pron sqlite file
     	//
-    	try {
-    	    pronConn = SQLiteDatabase.openOrCreateDatabase(Lia.PRON_PATH, null);
-    	} catch (Exception e) {
-    		pronConn = null;
-    	}
         TextView t = (TextView)getActivity().findViewById(R.id.textView1);    	
         recite = new Recite();
         if (recite.isNullDbConn() == true) {

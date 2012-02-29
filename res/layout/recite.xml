@@ -54,7 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0.5"
-            android:layout_margin="5dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:text="不记得了 TwT" />
 
         <Button
