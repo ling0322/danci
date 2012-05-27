@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dict_container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="0dp" 
+    android:layout_gravity="top">
+
+
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="fill_parent"
+        android:background="@+drawable/dict_input"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="8dp" 
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="187dp"
+        android:layout_weight="0.49"
+        android:layout_margin="5dp" 
+        android:background="#FFF"
+        android:divider="#CCC"
+        android:dividerHeight="0dp" >
+
+    </ListView>
+    <LinearLayout
+        android:id="@+id/defiContainer"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:padding="10dp" 
+        android:layout_height="187dp"
+        android:layout_weight="0.49">
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/dictButtonContainer"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:layout_height="75dp">
+        <Button
+            android:id="@+id/dictBackButton"
+            style="@style/button_text_blue"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_blue"
+            android:text="后退" />
+    </LinearLayout>
+</LinearLayout>
