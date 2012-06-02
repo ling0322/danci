@@ -1,7 +1,10 @@
 package org.ling0322.danci;
 
+import java.util.ArrayList;
+
 import android.support.v4.app.*;
 import android.util.Log;
+import android.view.View;
 
 import com.viewpagerindicator.*;
 
@@ -10,7 +13,14 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         super(fm);
         fragment = new CustomFragment[3];
     }
-
+    
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        Log.d("FragmentAdapter", "notifyDataSetChanged");
+        fragment = new CustomFragment[3];
+    }
+    
     @Override
     public CharSequence getPageTitle(int position) {
         switch(position) {
@@ -28,7 +38,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     
     @Override
     public CustomFragment getItem(int item) {
-        Log.d("lia", "getItem called.");
+        Log.d("lia", "getItem called -- " + item);
         switch(item) {
         case 0:
             if (fragment[0] == null)

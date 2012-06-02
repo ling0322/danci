@@ -3,6 +3,7 @@ package org.ling0322.danci;
 import java.util.ArrayList;
 import android.os.Bundle;
 import android.text.*;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -22,8 +23,6 @@ public class DictionaryFragment
     private Button backButton = null;
     public ArrayList<String> wordlist;
     private Dict dict12;
-    private MainActivity mainActivity;
-    
     
     private void showDefinition(String word) {
     	LinearLayout defiContainer = (LinearLayout)getActivity().findViewById(R.id.defiContainer);
@@ -71,10 +70,22 @@ public class DictionaryFragment
         adapter.notifyDataSetChanged();
     }
     
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("danci", "dict frag start");
+    }
     
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("danci", "dict frag destroy");
+    }
+   
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("danci", "dict frag resume");
     }
     
     @Override
@@ -83,11 +94,12 @@ public class DictionaryFragment
         // get the OxfordJm Dict Object
         //
         dict12 = Dict.getInstance(Dict.DICT_12);
+        Log.d("danci", "dict frag create view");
         return inflater.inflate(R.layout.dict, container, false);
     }
     
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ListView lv = (ListView)getActivity().findViewById(R.id.listView1);
         
@@ -109,6 +121,7 @@ public class DictionaryFragment
         backButton.setOnClickListener(this);
         
         mainActivity = (MainActivity)getActivity();
+        Log.d("danci", "dict frag activity created");
     }
 
 
@@ -118,7 +131,10 @@ public class DictionaryFragment
         updateWordList(arg0.toString());
     }
     
+
+    
     public void onPageSelected() {
+        et = (EditText)getActivity().findViewById(R.id.editText1);
     	if (et != null && et.getVisibility() == View.VISIBLE) {
     		
             // if not setSelection here, the action bar may be displayed

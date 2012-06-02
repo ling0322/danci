@@ -25,7 +25,11 @@ public class MainActivity
     }
     
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        //
+        // DON'T use savedInstanceState to initialize the activity, since it may cause 
+        // some exceptions
+        //
+        super.onCreate(new Bundle());
         setContentView(R.layout.main_tabs);
         
         Config.mainInstance = this;
@@ -102,14 +106,18 @@ public class MainActivity
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("lia", "main on_resume");
-        // closeIME();
+        Log.d("lia", "main resume");
+        EditText et = (EditText)findViewById(R.id.editText1);
+        if (et != null) 
+            et.clearFocus();
     }
 
     public void closeIME() {
         EditText et = (EditText)findViewById(R.id.editText1);
+        
         if (et == null)
             return ;
+        
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         Log.d("lia", "close input method");

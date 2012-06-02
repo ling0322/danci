@@ -112,6 +112,13 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     	if (mainActivity != null)
     	    mainActivity.closeIME();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mainActivity != null)
+            mainActivity.closeIME();
+    }
     
     private void updateDiaplay() {
         if (true == recite.isNullDbConn())
