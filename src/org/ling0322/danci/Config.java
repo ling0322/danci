@@ -16,6 +16,8 @@ public class Config {
     public final static String WL_GRE_PATH = LIA_PATH + "/wl-gre";
     public final static String WL_TOFEL_PATH = LIA_PATH + "/wl-tofel";
     public final static String DICT_12_PATH = LIA_PATH + "/dict-12-v2";
+    public final static String DICT_FULL_PATH = LIA_PATH + "/dict-full";
+    public final static String DICT_EC_PATH = LIA_PATH + "/dict-ec";
     public final static int DICT_12_PARTS = 16;
     public final static int REVIEWLIST_WORDS_PER_PAGE = 50;
     public static Activity mainInstance;

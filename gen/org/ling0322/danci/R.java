@@ -348,15 +348,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int recite_grey=0x7f020010;
         public static final int recite_white=0x7f020011;
         public static final int setting_menu=0x7f020012;
-        public static final int tran_grey=0x7f020013;
-        public static final int tran_white=0x7f020014;
-        public static final int vpi__tab_indicator=0x7f020015;
-        public static final int vpi__tab_selected_focused_holo=0x7f020016;
-        public static final int vpi__tab_selected_holo=0x7f020017;
-        public static final int vpi__tab_selected_pressed_holo=0x7f020018;
-        public static final int vpi__tab_unselected_focused_holo=0x7f020019;
-        public static final int vpi__tab_unselected_holo=0x7f02001a;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f02001b;
+        public static final int speak=0x7f020013;
+        public static final int tran_grey=0x7f020014;
+        public static final int tran_white=0x7f020015;
+        public static final int vpi__tab_indicator=0x7f020016;
+        public static final int vpi__tab_selected_focused_holo=0x7f020017;
+        public static final int vpi__tab_selected_holo=0x7f020018;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020019;
+        public static final int vpi__tab_unselected_focused_holo=0x7f02001a;
+        public static final int vpi__tab_unselected_holo=0x7f02001b;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02001c;
     }
     public static final class id {
         public static final int back_button=0x7f060014;
@@ -429,20 +430,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int hello=0x7f050000;
     }
     public static final class style {
-        public static final int ButtonText=0x7f0b000b;
-        public static final int CustomTabPageIndicator=0x7f0b0006;
-        public static final int CustomTabPageIndicator_Text=0x7f0b0007;
-        public static final int Lia=0x7f0b0005;
-        public static final int PageButtonText=0x7f0b000c;
+        public static final int Anne=0x7f0b0005;
+        public static final int AnneDialog=0x7f0b0006;
+        public static final int AnneListView=0x7f0b0007;
+        public static final int ButtonText=0x7f0b000d;
+        public static final int CustomTabPageIndicator=0x7f0b0008;
+        public static final int CustomTabPageIndicator_Text=0x7f0b0009;
+        public static final int PageButtonText=0x7f0b000e;
         public static final int StyledIndicators=0x7f0b0004;
         public static final int TextAppearance_TabPageIndicator=0x7f0b0003;
         public static final int Theme_PageIndicatorDefaults=0x7f0b0000;
         public static final int Widget=0x7f0b0001;
         public static final int Widget_TabPageIndicator=0x7f0b0002;
-        public static final int button_text_blue=0x7f0b0008;
-        public static final int button_text_orange=0x7f0b000a;
-        public static final int button_text_red=0x7f0b0009;
-        public static final int progress_view=0x7f0b000d;
+        public static final int button_text_blue=0x7f0b000a;
+        public static final int button_text_orange=0x7f0b000c;
+        public static final int button_text_red=0x7f0b000b;
+        public static final int progress_view=0x7f0b000f;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

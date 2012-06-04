@@ -22,10 +22,11 @@ public class DefinitionView {
     
     public static View getDefinitionView(Activity activity, String word, boolean onlyWord) {
         
-        Dict dict12Dict = Dict.getInstance(Dict.DICT_12);
+        Dictionary dict12Dict = Dictionary.getInstance();
         String defiJson = dict12Dict.getDefinition(word.toLowerCase());
         String pron = null;
         String defi = null;
+        Speech speech = Speech.getInstance();
         ArrayList<String> examplesOrig = new ArrayList<String>();
         ArrayList<String> examplesTrans = new ArrayList<String>();
         if (lingoesFont == null) {
@@ -83,7 +84,7 @@ public class DefinitionView {
         //
         // set the pron text view
         //
-        if (pron != null && pron.equals("null") == false) {
+        if (pron != null && pron.equals("null") == false && pron.equals("") == false) {
             TextView pronView = new TextView(activity);
             pronView.setText(String.format(" /%s/", pron));
             pronView.setTextSize(18);
@@ -94,6 +95,17 @@ public class DefinitionView {
         
         if (onlyWord == true) {
             return sv;
+        }
+        
+        //
+        // speak button
+        //
+        if (false == true) {
+            ImageView imageView = new ImageView(activity);
+            LinearLayout.LayoutParams lpSpeakImage = new LinearLayout.LayoutParams(48, 48);
+            imageView.setLayoutParams(lpSpeakImage);
+            imageView.setImageDrawable(activity.getResources().getDrawable(R.drawable.speak));
+            ll.addView(imageView);
         }
         
         //

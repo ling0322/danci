@@ -27,6 +27,7 @@
         android:layout_margin="5dp" 
         android:background="#FFF"
         android:divider="#CCC"
+        style="@style/AnneListView"
         android:dividerHeight="0dp" >
 
     </ListView>

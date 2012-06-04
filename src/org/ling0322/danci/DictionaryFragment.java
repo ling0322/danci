@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.app.Activity;
@@ -16,13 +17,14 @@ import android.support.v4.app.*;
 
 public class DictionaryFragment 
     extends CustomFragment 
-    implements TextWatcher, OnItemClickListener, OnClickListener, OnFocusChangeListener {
+    implements TextWatcher, OnItemClickListener, OnClickListener, 
+                OnFocusChangeListener, OnKeyListener {
     
     public WordlistAdapter adapter;
     private EditText et = null;
     private Button backButton = null;
     public ArrayList<String> wordlist;
-    private Dict dict12;
+    private Dictionary dict12;
     
     private void showDefinition(String word) {
     	LinearLayout defiContainer = (LinearLayout)getActivity().findViewById(R.id.defiContainer);
@@ -93,7 +95,7 @@ public class DictionaryFragment
         //
         // get the OxfordJm Dict Object
         //
-        dict12 = Dict.getInstance(Dict.DICT_12);
+        dict12 = Dictionary.getInstance();
         Log.d("danci", "dict frag create view");
         return inflater.inflate(R.layout.dict, container, false);
     }
@@ -107,6 +109,7 @@ public class DictionaryFragment
         et.addTextChangedListener(this);
 
         et.setOnClickListener(this);
+        et.setOnKeyListener(this);
         et.setOnFocusChangeListener(this);
         wordlist =  new ArrayList<String>();
         
@@ -134,7 +137,6 @@ public class DictionaryFragment
 
     
     public void onPageSelected() {
-        et = (EditText)getActivity().findViewById(R.id.editText1);
     	if (et != null && et.getVisibility() == View.VISIBLE) {
     		
             // if not setSelection here, the action bar may be displayed
@@ -156,8 +158,12 @@ public class DictionaryFragment
 
     @Override
     public boolean onBackKey() {
-    	hideDefinition();
-		return true;
+        if (et.getVisibility() == View.GONE) {
+    	    hideDefinition();
+		    return true;
+        } else {
+            return false;
+        }
     }
     
     public void onFocusChange(View view, boolean b) {
@@ -174,6 +180,15 @@ public class DictionaryFragment
         	hideDefinition();
         }
         
+    }
+
+    public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+        if (arg1 == KeyEvent.KEYCODE_ENTER) {
+            if (wordlist.size() > 0)
+                showDefinition(wordlist.get(0));
+            return true;
+        }
+        return false;
     }
 
 

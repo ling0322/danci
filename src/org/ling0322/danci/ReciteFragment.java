@@ -2,6 +2,8 @@ package org.ling0322.danci;
 
 import java.io.*;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.preference.*;
 import android.support.v4.app.*;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -200,6 +203,18 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
 
     }
 
+    @Override 
+    public boolean onBackKey() {
+        Dialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AnneDialog))
+            .setMessage("确定要退出吗?")
+            .setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                    Config.mainInstance.finish();
+                }    
+            }).create();
+        dialog.show(); 
+        return true;
+    }
     public void onDetach() {
         super.onDetach();
 

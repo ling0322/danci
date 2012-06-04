@@ -3,10 +3,19 @@
     <style name="StyledIndicators" parent="@android:style/Theme.Light">
 
     </style>
-    <style name="Lia" parent="android:style/Theme.Light.NoTitleBar"> 
+    <style name="Anne" parent="android:style/Theme.Black.NoTitleBar"> 
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:background">#FFFFFF</item>
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+    </style>
+    <style name="AnneDialog" parent="android:style/Theme.Dialog"> 
+        <item name="android:windowFrame">@null</item>
+        <item name="android:background">@null</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+    <style name="AnneListView" parent="android:style/Theme.Dialog"> 
+        <item name="android:textColor">#000000</item>
+        <item name="android:fadingEdge">none</item>
     </style>
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
