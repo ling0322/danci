@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.support.v4.app.*;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.viewpagerindicator.*;
 

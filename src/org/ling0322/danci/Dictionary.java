@@ -5,6 +5,7 @@ import java.util.*;
 
 import android.database.*;
 import android.database.sqlite.*;
+import android.util.Log;
 
 public class Dictionary {
 	private ArrayList<SQLiteDatabase> dictDbList;
@@ -19,12 +20,15 @@ public class Dictionary {
 	    dictDbList = new ArrayList<SQLiteDatabase>();
 		if (isDictExist(Config.DICT_12_PATH)) {
 		    dictDbList.add(SQLiteDatabase.openOrCreateDatabase(Config.DICT_12_PATH, null));
+		    Log.d("Dictionary", "added dict-12");
 		}
         if (isDictExist(Config.DICT_FULL_PATH)) {
             dictDbList.add(SQLiteDatabase.openOrCreateDatabase(Config.DICT_FULL_PATH, null));
+            Log.d("Dictionary", "added dict-full");
         }
         if (isDictExist(Config.DICT_EC_PATH)) {
             dictDbList.add(SQLiteDatabase.openOrCreateDatabase(Config.DICT_EC_PATH, null));
+            Log.d("Dictionary", "added dict-ec");
         }
 	}
 	
@@ -96,6 +100,9 @@ public class Dictionary {
 	    }
 	    Collections.sort(wordList);
 	    singleton(wordList);
+	    if (wordList.size() <= 30)
+	        return wordList;
+	    
 	    return new ArrayList<String>(wordList.subList(0, 30));
 	    
 	}

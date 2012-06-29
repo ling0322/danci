@@ -8,45 +8,34 @@ import android.preference.PreferenceManager;
 
 public class Wordlist {
     public static HashMap<String, SQLiteDatabase> wordlistDbConnMap = new HashMap<String, SQLiteDatabase>();
-    public static SQLiteDatabase getWordlistDbConn() {
+    public static SQLiteDatabase openWordlistDb() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Config.mainInstance);
         String wordlistName = sp.getString("wordlist", "");
         if (wordlistName.equals(""))
             return null;
+        
         if (wordlistName.equals("英语四级(CET-4)")) {
-            if (wordlistDbConnMap.containsKey(wordlistName) == false)
-                wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Config.WL_CET4_PATH, null));
-            return wordlistDbConnMap.get(wordlistName);
+            return SQLiteDatabase.openOrCreateDatabase(Config.WL_CET4_PATH, null);
         }
         
         if (wordlistName.equals("英语六级(CET-6)")) {
-            if (wordlistDbConnMap.containsKey(wordlistName) == false)
-                wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Config.WL_CET6_PATH, null));
-            return wordlistDbConnMap.get(wordlistName);
+            return SQLiteDatabase.openOrCreateDatabase(Config.WL_CET6_PATH, null);
         }
         
         if (wordlistName.equals("考研英语词汇")) {
-            if (wordlistDbConnMap.containsKey(wordlistName) == false)
-                wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Config.WL_KAOYAN_PATH, null));
-            return wordlistDbConnMap.get(wordlistName);
+            return SQLiteDatabase.openOrCreateDatabase(Config.WL_KAOYAN_PATH, null);
         }
         
         if (wordlistName.equals("雅思精选词汇")) {
-            if (wordlistDbConnMap.containsKey(wordlistName) == false)
-                wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Config.WL_IELTS_PATH, null));
-            return wordlistDbConnMap.get(wordlistName);
+            return SQLiteDatabase.openOrCreateDatabase(Config.WL_IELTS_PATH, null);
         }
         
         if (wordlistName.equals("TOFEL词汇")) {
-            if (wordlistDbConnMap.containsKey(wordlistName) == false)
-                wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Config.WL_TOFEL_PATH, null));
-            return wordlistDbConnMap.get(wordlistName);
+            return SQLiteDatabase.openOrCreateDatabase(Config.WL_TOFEL_PATH, null);
         }
         
         if (wordlistName.equals("GRE词汇")) {
-            if (wordlistDbConnMap.containsKey(wordlistName) == false)
-                wordlistDbConnMap.put(wordlistName, SQLiteDatabase.openOrCreateDatabase(Config.WL_GRE_PATH, null));
-            return wordlistDbConnMap.get(wordlistName);
+            return SQLiteDatabase.openOrCreateDatabase(Config.WL_GRE_PATH, null);
         }
         return null;
     }

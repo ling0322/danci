@@ -41,6 +41,8 @@ public class DictionaryFragment
 			LinearLayout.LayoutParams.FILL_PARENT,
 			LinearLayout.LayoutParams.FILL_PARENT);
 		defiContainer.addView(sv);
+        int screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+        lp.setMargins(screenWidth / 40, 0, screenWidth / 40, 0);
 		sv.setLayoutParams(lp);
 		mainActivity.closeIME();
     }

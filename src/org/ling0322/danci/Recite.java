@@ -10,9 +10,9 @@ import android.util.Pair;
 class UpdateDatabase implements Runnable {
     private ArrayList<Pair<String, Boolean>> answerList;
     private WordlistDB wl;
-    public UpdateDatabase(ArrayList<Pair<String, Boolean>> answerList, SQLiteDatabase conn) {
+    public UpdateDatabase(ArrayList<Pair<String, Boolean>> answerList) {
         this.answerList = answerList;
-        this.wl = new WordlistDB(conn);
+        this.wl = new WordlistDB();
     }
     public void run() {
         wl.answerList(answerList);
@@ -31,7 +31,6 @@ public class Recite {
     private final int ST_DRILL = 3;
 
     private Thread updateThread;
-    private SQLiteDatabase conn = null;
     private ArrayList<String> wordList = new ArrayList<String>();
     private ArrayList<String> drillList = new ArrayList<String>();
     private ArrayList<String> sqlUpdateBuffer= new ArrayList<String>();
@@ -45,25 +44,19 @@ public class Recite {
     
 
     public Recite() {
-	answerList = new ArrayList<Pair<String, Boolean>>();
-        conn = Wordlist.getWordlistDbConn();
-        if (conn == null)
+        answerList = new ArrayList<Pair<String, Boolean>>();
+        wldb = new WordlistDB();
+        if (wldb.isNullDbConn() == true)
             return ;
-        wldb = new WordlistDB(conn);
         totalWord = wldb.totalWord();
     }
     
 
     public boolean isNullDbConn() {
-        if (conn == null) {
-            return true;
-        } else {
-            return false;
-        }
+        return wldb.isNullDbConn();
     }
     
     public void finallize() {
-        conn.close();
     }
     
     public String getCntState() {
@@ -123,7 +116,7 @@ public class Recite {
                 // During the drill period, there is no database IO, so we could
                 // now start to write back to database
                 //
-                updateThread = new Thread(new UpdateDatabase(answerList, conn));
+                updateThread = new Thread(new UpdateDatabase(answerList));
                 updateThread.start();
                 sqlUpdateBuffer.clear();
                 switchState();
@@ -141,6 +134,7 @@ public class Recite {
                 }
                 drillList.clear();
                 wordList.clear();
+                answerList.clear();
             }
         }
     }

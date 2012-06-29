@@ -9,6 +9,7 @@ import android.widget.*;
 public class WordlistAdapter extends BaseAdapter {
 
 	ArrayList<String> list = null;
+	ArrayList<Integer> remainsCount = null;
 	ArrayList<View> viewsList = null;
 	Context context;
 	public WordlistAdapter(ArrayList<String> list, Context context) {
@@ -16,6 +17,13 @@ public class WordlistAdapter extends BaseAdapter {
 		this.context = context;
 		notifyDataSetChanged();
 	}
+
+	   public WordlistAdapter(ArrayList<String> list, ArrayList<Integer> remainsCount, Context context) {
+	        this.list = list;
+	        this.context = context;
+	        this.remainsCount = remainsCount;
+	        notifyDataSetChanged();
+	    }
 	
 	public int getCount() {
 		return list.size();
@@ -45,10 +53,15 @@ public class WordlistAdapter extends BaseAdapter {
 		
 		LayoutInflater li = LayoutInflater.from(context);
 		View view = li.inflate(R.layout.wordlist_item, null);
-		TextView tv = (TextView)view;
-		tv.setText(list.get(arg0));
-		viewsList.set(arg0, tv);
-		return tv;
+		
+		TextView wordText = (TextView)view.findViewById(R.id.wordlistItemWord);
+		wordText.setText(list.get(arg0));
+		if (remainsCount != null) {
+	        TextView commentText = (TextView)view.findViewById(R.id.wordlistItemComment);
+	        commentText.setText(String.format("需复习%d次", WordlistDB.REVIEW_TIMES - remainsCount.get(arg0)));		    
+		}
+		viewsList.set(arg0, view);
+		return view;
 	}
 
 }

@@ -17,6 +17,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="5dp" 
+        android:padding="7dp"
         android:layout_height="wrap_content" />
 
     <ListView
@@ -35,7 +36,6 @@
         android:id="@+id/defiContainer"
         android:layout_width="fill_parent"
         android:visibility="gone"
-        android:padding="10dp" 
         android:layout_height="187dp"
         android:layout_weight="0.49">
     </LinearLayout>

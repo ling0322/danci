@@ -61,6 +61,19 @@
             android:text="不记得了 TwT" />
 
         <Button
+            android:id="@+id/init_button"
+            android:background="@drawable/btn_red"
+            style="@style/button_text_red"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="点击这里选择单词表" />
+        
+        <Button
             android:id="@+id/next_button"
             android:background="@drawable/btn_blue"
             style="@style/button_text_blue"

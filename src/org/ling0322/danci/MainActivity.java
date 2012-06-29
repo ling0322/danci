@@ -13,7 +13,7 @@ import android.support.v4.view.ViewPager;
 
 public class MainActivity 
     extends FragmentActivity 
-    implements OnClickListener, ViewPager.OnPageChangeListener { 
+    implements ViewPager.OnPageChangeListener { 
     /** Called when the activity is first created. */
     
     private ViewPager mPager = null;
@@ -46,17 +46,6 @@ public class MainActivity
         mIndicator.setCurrentItem(1);
         
         Log.d("lia", "main on_create");
-    }
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.button1:
-            startActivity(new Intent(MainActivity.this, DictionaryFragment.class));
-            break;
-        case R.id.button2:
-            startActivity(new Intent(MainActivity.this, ReciteFragment.class));
-            break;
-        }
     }
     
     //

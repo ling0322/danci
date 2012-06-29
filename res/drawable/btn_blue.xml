@@ -10,7 +10,7 @@
                 android:dashGap="0dp"
                 android:dashWidth="6dp" />
             <corners
-                android:radius="4dp" />
+                android:radius="5dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"
@@ -28,7 +28,7 @@
                 android:dashGap="4dp"
                 android:dashWidth="6dp" />
             <corners
-                android:radius="4dp" />
+                android:radius="5dp" />
             <padding
                 android:left="10dp"
                 android:top="10dp"

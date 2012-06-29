@@ -24,7 +24,13 @@
             android:negativeButtonText="Cancel"
             android:enabled="true" 
             android:defaultValue="" />
-            
+
+        <CheckBoxPreference
+            android:title="快速学习"
+            android:defaultValue="false"
+            android:summary="减少生词的复习次数，加快学习单词的进度"
+            android:key="quickLearning" />   
+        
         <org.ling0322.danci.ClearDialog
             android:key="reciting_restart"
             android:title="重置单词表"

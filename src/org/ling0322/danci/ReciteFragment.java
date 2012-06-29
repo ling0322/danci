@@ -29,6 +29,8 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     private Button yesButton;
     private Button noButton;
     private Button nextButton;
+    private Button initButton;
+    
     private MediaPlayer mp;
     private SharedPreferences prefs;
     private MainActivity mainActivity;
@@ -131,7 +133,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
         boolean speech = prefs.getBoolean("auto_speech", false);
         ((LinearLayout)getActivity().findViewById(R.id.word_defi_view)).removeAllViews();
         if (recite.isFinsihed()) {
-            ((ReviewListFragment)mainActivity.getFragmentAdapter().getItem(2)).reflesh();
+            ((ReviewListFragment)mainActivity.getFragmentAdapter().getItem(2)).refleshList();
             showStartButton();
             TextView t = (TextView)getActivity().findViewById(R.id.textView1);
             t.setText(recite.getCntState());
@@ -209,8 +211,12 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
             .setMessage("确定要退出吗?")
             .setPositiveButton("退出", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface arg0, int arg1) {
-                    Config.mainInstance.finish();
+                    System.exit(0);
                 }    
+            })
+            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                }                    
             }).create();
         dialog.show(); 
         return true;
@@ -228,9 +234,26 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
         //
         TextView t = (TextView)getActivity().findViewById(R.id.textView1);        
         recite = new Recite();
+        mainActivity = (MainActivity)getActivity();
+        
+        startButton = (Button)getActivity().findViewById(R.id.start_button);
+        yesButton = (Button)getActivity().findViewById(R.id.yes_button);
+        noButton = (Button)getActivity().findViewById(R.id.no_button);
+        nextButton = (Button)getActivity().findViewById(R.id.next_button);
+        initButton = (Button)getActivity().findViewById(R.id.init_button);
+        
+        startButton.setOnClickListener(this);
+        yesButton.setOnClickListener(this);
+        noButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
+        initButton.setOnClickListener(this);
+        
         if (recite.isNullDbConn() == true) {
-            t.setText("请先进入'Menu→选项→单词表'选择单词表");
-            getActivity().findViewById(R.id.button_container).setVisibility(View.INVISIBLE);
+            t.setText("单词喵喵喵: 请先选择一个的单词表");
+            startButton.setVisibility(View.GONE);
+            yesButton.setVisibility(View.GONE);
+            noButton.setVisibility(View.GONE);
+            nextButton.setVisibility(View.GONE);
             return ;
         }
             
@@ -245,19 +268,11 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
         //
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         
-        startButton = (Button)getActivity().findViewById(R.id.start_button);
-        yesButton = (Button)getActivity().findViewById(R.id.yes_button);
-        noButton = (Button)getActivity().findViewById(R.id.no_button);
-        nextButton = (Button)getActivity().findViewById(R.id.next_button);
-        
-        startButton.setOnClickListener(this);
-        yesButton.setOnClickListener(this);
-        noButton.setOnClickListener(this);
-        nextButton.setOnClickListener(this);
+
 
         showStartButton();
         
-        mainActivity = (MainActivity)getActivity();
+        
     }
     
     public void onClick(View arg0) {
@@ -274,6 +289,9 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
         case R.id.next_button:
             onNextButtonClicked();
             break;
+        case R.id.init_button:
+            Intent it = new Intent(getActivity(), LiaPreferencesActivity.class);
+            startActivity(it);
         }
     }
 }

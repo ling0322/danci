@@ -11,9 +11,10 @@ public class ClearDialog extends DialogPreference  {
     }
     
     private void resetReciting() {
-        SQLiteDatabase dbsqlite = Wordlist.getWordlistDbConn();
+        SQLiteDatabase dbsqlite = Wordlist.openWordlistDb();
         String sqlCmd = "update dict set tested = 0, correct = 0, continuous_correct = 0, last_tested = 0";
         dbsqlite.execSQL(sqlCmd);
+        dbsqlite.close();
         // ReciteActivity.instance.finish();
     }
     

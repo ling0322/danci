@@ -4,6 +4,7 @@
     <string name="hello">Hello World, LiaActivity!</string>
     <string name="app_name">单词喵喵喵</string>
     
+    
     <string-array name="reciting_mode_title">
         <item>Word -> Definition</item>
         <item>Definition -> Word</item> 
@@ -31,6 +32,21 @@
         <item>TOFEL词汇</item> 
         <item>GRE词汇</item> 
     </string-array>
+    
+    <string-array name="reviewTimesText">
+        <item>1次</item>
+        <item>2次</item> 
+        <item>3次</item> 
+        <item>4次</item> 
+        <item>5次</item> 
+    </string-array>
 
+    <string-array name="reviewTimesValue">
+        <item>1</item>
+        <item>2</item> 
+        <item>3</item> 
+        <item>4</item> 
+        <item>5</item>
+    </string-array>
 
 </resources>

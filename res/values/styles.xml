@@ -68,7 +68,7 @@
         <item name="android:textColor">#808080</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15dp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">normal</item> 
     </style>
     <style name="progress_view">
         <item name="android:layout_width">fill_parent</item>

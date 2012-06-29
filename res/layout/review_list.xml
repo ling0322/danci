@@ -2,10 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_gravity="top"
+    android:padding="0dp" 
     android:orientation="vertical" >
     
     <TextView
         android:id="@+id/review_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:background="@drawable/progress_view"
+        style="@style/progress_view"
+        android:layout_margin="3dp"
+         />
+
+    <TextView
+        android:id="@+id/reviewWordsMessage"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -24,12 +37,21 @@
         style="@style/AnneListView"
         android:dividerHeight="0dp" >
     </ListView>
-
+    
+    <LinearLayout
+        android:id="@+id/revDefiContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        android:background="#FFF"
+        android:layout_weight="0.49">
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/rev_btn"
         android:layout_width="fill_parent"
-        android:layout_height="75dp">
-
+        android:layout_height="75dp" >
+
+        
         <Button
             android:id="@+id/rev_button_prev"
             android:layout_width="wrap_content"
@@ -52,6 +74,49 @@
             android:layout_marginBottom="5dp"
             style="@style/button_text_blue"
             android:text="下一页 »" />
+    </LinearLayout>
+        
+    <LinearLayout
+        android:id="@+id/revWordsButtons"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:layout_height="75dp" >
+
+        <Button
+            android:id="@+id/revButtonBack"
+            style="@style/button_text_red"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/btn_red"
+            android:text="返回" />
+        
+        <Button
+            android:id="@+id/revButtonPrevWord"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_blue"
+            style="@style/button_text_blue"
+            android:layout_margin="5dp"
+            android:text="« 上一个" />
+
+        <Button
+            android:id="@+id/revButtonNextWord"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5"
+            android:background="@drawable/btn_blue"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            style="@style/button_text_blue"
+            android:text="下一个 »" />
     </LinearLayout>
 
 </LinearLayout>

@@ -11,6 +11,8 @@ public final class R {
     public static final class array {
         public static final int reciting_mode_title=0x7f0c0000;
         public static final int reciting_mode_value=0x7f0c0001;
+        public static final int reviewTimesText=0x7f0c0004;
+        public static final int reviewTimesValue=0x7f0c0005;
         public static final int wordlist_values=0x7f0c0003;
         public static final int wordlists=0x7f0c0002;
     }
@@ -293,6 +295,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_underline_indicator_fades=0x7f080004;
     }
     public static final class color {
+        public static final int background=0x7f070013;
+        public static final int blue=0x7f070011;
         public static final int default_circle_indicator_fill_color=0x7f070008;
         public static final int default_circle_indicator_page_color=0x7f070009;
         public static final int default_circle_indicator_stroke_color=0x7f07000a;
@@ -302,6 +306,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_selected_color=0x7f07000e;
         public static final int default_title_indicator_text_color=0x7f07000f;
         public static final int default_underline_indicator_selected_color=0x7f070010;
+        public static final int red=0x7f070012;
         public static final int vpi__background_holo_dark=0x7f070000;
         public static final int vpi__background_holo_light=0x7f070001;
         public static final int vpi__bright_foreground_disabled_holo_dark=0x7f070004;
@@ -310,8 +315,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__bright_foreground_holo_light=0x7f070003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f070006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f070007;
-        public static final int vpi__dark_theme=0x7f070011;
-        public static final int vpi__light_theme=0x7f070012;
+        public static final int vpi__dark_theme=0x7f070014;
+        public static final int vpi__light_theme=0x7f070015;
     }
     public static final class dimen {
         public static final int default_circle_indicator_radius=0x7f0a0000;
@@ -360,47 +365,42 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__tab_unselected_pressed_holo=0x7f02001c;
     }
     public static final class id {
-        public static final int back_button=0x7f060014;
-        public static final int button1=0x7f06000f;
-        public static final int button2=0x7f060010;
-        public static final int button3=0x7f060011;
-        public static final int buttonAddTo=0x7f06000d;
-        public static final int button_container=0x7f060019;
-        public static final int container=0x7f060017;
-        public static final int defiContainer=0x7f06000a;
-        public static final int dictBackButton=0x7f06000c;
-        public static final int dictButtonContainer=0x7f06000b;
-        public static final int dict_container=0x7f060007;
-        public static final int editText1=0x7f060008;
-        public static final int go_button=0x7f060027;
-        public static final int indicator=0x7f060012;
-        public static final int linearLayout1=0x7f060004;
-        public static final int linearLayout2=0x7f060024;
-        public static final int listView1=0x7f060009;
-        public static final int menu_preferences=0x7f060028;
-        public static final int next_button=0x7f06001d;
-        public static final int no_button=0x7f06001c;
+        public static final int button1=0x7f06001f;
+        public static final int button_container=0x7f06000d;
+        public static final int defiContainer=0x7f060006;
+        public static final int dictBackButton=0x7f060008;
+        public static final int dictButtonContainer=0x7f060007;
+        public static final int dict_container=0x7f060003;
+        public static final int editText1=0x7f060004;
+        public static final int indicator=0x7f06000a;
+        public static final int init_button=0x7f060011;
+        public static final int linearLayout1=0x7f06001e;
+        public static final int linearLayout2=0x7f060020;
+        public static final int listView1=0x7f060005;
+        public static final int menu_preferences=0x7f060023;
+        public static final int next_button=0x7f060012;
+        public static final int no_button=0x7f060010;
         public static final int none=0x7f060000;
-        public static final int page_count=0x7f060026;
-        public static final int page_edit=0x7f060025;
-        public static final int pager=0x7f060013;
-        public static final int prev_button=0x7f060023;
-        public static final int rev_btn=0x7f060020;
-        public static final int rev_button_next=0x7f060022;
-        public static final int rev_button_prev=0x7f060021;
-        public static final int review_progress=0x7f06001e;
-        public static final int review_wordlist=0x7f06001f;
-        public static final int right_button=0x7f060016;
-        public static final int scrollView1=0x7f060003;
-        public static final int start_button=0x7f06001a;
-        public static final int textDefinition=0x7f060006;
-        public static final int textView1=0x7f06000e;
-        public static final int textWord=0x7f060005;
+        public static final int pager=0x7f06000b;
+        public static final int revButtonBack=0x7f06001b;
+        public static final int revButtonNextWord=0x7f06001d;
+        public static final int revButtonPrevWord=0x7f06001c;
+        public static final int revDefiContainer=0x7f060016;
+        public static final int revWordsButtons=0x7f06001a;
+        public static final int rev_btn=0x7f060017;
+        public static final int rev_button_next=0x7f060019;
+        public static final int rev_button_prev=0x7f060018;
+        public static final int reviewWordsMessage=0x7f060014;
+        public static final int review_progress=0x7f060013;
+        public static final int review_wordlist=0x7f060015;
+        public static final int start_button=0x7f06000e;
+        public static final int textView1=0x7f060009;
         public static final int triangle=0x7f060001;
         public static final int underline=0x7f060002;
-        public static final int view_title=0x7f060015;
-        public static final int word_defi_view=0x7f060018;
-        public static final int yes_button=0x7f06001b;
+        public static final int word_defi_view=0x7f06000c;
+        public static final int wordlistItemComment=0x7f060022;
+        public static final int wordlistItemWord=0x7f060021;
+        public static final int yes_button=0x7f06000f;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f090000;
@@ -409,18 +409,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_underline_indicator_fade_length=0x7f090003;
     }
     public static final class layout {
-        public static final int definition=0x7f030000;
-        public static final int dict=0x7f030001;
-        public static final int dict_list_item=0x7f030002;
-        public static final int init=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int main_tabs=0x7f030005;
-        public static final int navigator=0x7f030006;
-        public static final int recite=0x7f030007;
-        public static final int review_list=0x7f030008;
-        public static final int word_list=0x7f030009;
-        public static final int word_view=0x7f03000a;
-        public static final int wordlist_item=0x7f03000b;
+        public static final int dict=0x7f030000;
+        public static final int init=0x7f030001;
+        public static final int main=0x7f030002;
+        public static final int main_tabs=0x7f030003;
+        public static final int recite=0x7f030004;
+        public static final int review_list=0x7f030005;
+        public static final int word_view=0x7f030006;
+        public static final int wordlist_item=0x7f030007;
     }
     public static final class menu {
         public static final int menu=0x7f0d0000;
