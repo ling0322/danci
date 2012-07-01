@@ -99,15 +99,11 @@ public class DictionaryFragment
         //
         dict12 = Dictionary.getInstance();
         Log.d("danci", "dict frag create view");
-        return inflater.inflate(R.layout.dict, container, false);
-    }
-    
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ListView lv = (ListView)getActivity().findViewById(R.id.listView1);
+        View view = inflater.inflate(R.layout.dict, container, false);
         
-        et = (EditText)getActivity().findViewById(R.id.editText1);
+        ListView lv = (ListView)view.findViewById(R.id.listView1);
+        
+        et = (EditText)view.findViewById(R.id.editText1);
         et.addTextChangedListener(this);
 
         et.setOnClickListener(this);
@@ -122,11 +118,19 @@ public class DictionaryFragment
         //
         // Back button event
         //
-        backButton = (Button)getActivity().findViewById(R.id.dictBackButton);
+        backButton = (Button)view.findViewById(R.id.dictBackButton);
         backButton.setOnClickListener(this);
         
         mainActivity = (MainActivity)getActivity();
         Log.d("danci", "dict frag activity created");
+        
+        return view;
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
 

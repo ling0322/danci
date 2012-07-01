@@ -34,19 +34,25 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     private MediaPlayer mp;
     private SharedPreferences prefs;
     private MainActivity mainActivity;
+
+    private View fragmentView;
     
     public ReciteFragment() {
-    	
+        //
+        // the player to play speech audio
+        //
+        mp = new MediaPlayer();
+        
     }
     
     private void showStartButton() {
-        LinearLayout la = (LinearLayout)getActivity().findViewById(R.id.button_container);
+        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
         la.removeAllViews();
         la.addView(startButton);
     }
     
     private void showTestButtons() {
-        LinearLayout la = (LinearLayout)getActivity().findViewById(R.id.button_container);
+        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
         la.removeAllViews();
         noButton.setText("不记得了 TwT");
         yesButton.setText("我知道 :)");
@@ -55,7 +61,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     }
     
     private void showTest2Buttons() {
-        LinearLayout la = (LinearLayout)getActivity().findViewById(R.id.button_container);
+        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
         la.removeAllViews();
         noButton.setText("记错了 QAQ");
         yesButton.setText("正确 =w=");
@@ -64,7 +70,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     }
     
     private void showNextButton() {
-        LinearLayout la = (LinearLayout)getActivity().findViewById(R.id.button_container);
+        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
         la.removeAllViews();
         la.addView(nextButton);        
     }
@@ -114,6 +120,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
 
     @Override
     public void onPageSelected() {
+    	MainActivity mainActivity = (MainActivity)getActivity();
     	if (mainActivity != null)
     	    mainActivity.closeIME();
     }
@@ -201,7 +208,38 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.recite, container, false);
+    	prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    	
+        fragmentView = inflater.inflate(R.layout.recite, container, false);
+        TextView t = (TextView)fragmentView.findViewById(R.id.textView1);        
+        recite = new Recite();
+        mainActivity = (MainActivity)getActivity();
+        
+        startButton = (Button)fragmentView.findViewById(R.id.start_button);
+        yesButton = (Button)fragmentView.findViewById(R.id.yes_button);
+        noButton = (Button)fragmentView.findViewById(R.id.no_button);
+        nextButton = (Button)fragmentView.findViewById(R.id.next_button);
+        initButton = (Button)fragmentView.findViewById(R.id.init_button);
+        
+        startButton.setOnClickListener(this);
+        yesButton.setOnClickListener(this);
+        noButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
+        initButton.setOnClickListener(this);
+        
+        if (recite.isNullDbConn() == true) {
+            t.setText("单词喵喵喵: 请先选择一个的单词表");
+            startButton.setVisibility(View.GONE);
+            yesButton.setVisibility(View.GONE);
+            noButton.setVisibility(View.GONE);
+            nextButton.setVisibility(View.GONE);
+            return fragmentView;
+        }
+            
+
+        t.setText(recite.getCntState());
+        showStartButton();
+        return fragmentView;
 
     }
 
@@ -229,49 +267,6 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //
-        // pron sqlite file
-        //
-        TextView t = (TextView)getActivity().findViewById(R.id.textView1);        
-        recite = new Recite();
-        mainActivity = (MainActivity)getActivity();
-        
-        startButton = (Button)getActivity().findViewById(R.id.start_button);
-        yesButton = (Button)getActivity().findViewById(R.id.yes_button);
-        noButton = (Button)getActivity().findViewById(R.id.no_button);
-        nextButton = (Button)getActivity().findViewById(R.id.next_button);
-        initButton = (Button)getActivity().findViewById(R.id.init_button);
-        
-        startButton.setOnClickListener(this);
-        yesButton.setOnClickListener(this);
-        noButton.setOnClickListener(this);
-        nextButton.setOnClickListener(this);
-        initButton.setOnClickListener(this);
-        
-        if (recite.isNullDbConn() == true) {
-            t.setText("单词喵喵喵: 请先选择一个的单词表");
-            startButton.setVisibility(View.GONE);
-            yesButton.setVisibility(View.GONE);
-            noButton.setVisibility(View.GONE);
-            nextButton.setVisibility(View.GONE);
-            return ;
-        }
-            
-
-        t.setText(recite.getCntState());
-        //
-        // the player to play speech audio
-        //
-        mp = new MediaPlayer();
-        //
-        // get some preference data
-        //
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        
-
-
-        showStartButton();
-        
         
     }
     

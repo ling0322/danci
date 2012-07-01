@@ -13,18 +13,10 @@
             android:theme="@style/Anne">
 
         </activity>
-        <activity android:name=".DictionaryFragment" android:theme="@style/Anne" android:label="@string/app_name"></activity> 
-        <activity android:name=".ReciteFragment" android:theme="@style/Anne" android:label="@string/app_name"></activity>
-        <activity android:name=".LiaPreferencesActivity" android:label="@string/app_name"></activity>
-        <activity android:name=".WordListActivity" android:theme="@style/Anne" android:label="@string/app_name"></activity>
-        <activity 
-            android:name=".DefinitionActivity" 
-            android:theme="@style/Anne" 
-            android:label="@string/app_name">
-        </activity>
+        <activity android:name=".LiaPreferencesActivity" android:theme="@android:style/Theme.Holo.Light" android:label="@string/app_name"></activity>
         <activity 
             android:name=".InitActivity" 
-            android:theme="@style/Anne" 
+            android:theme="@android:style/Theme.Holo.Light" 
             android:label="@string/app_name">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

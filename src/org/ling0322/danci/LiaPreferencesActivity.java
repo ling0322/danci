@@ -23,8 +23,6 @@ public class LiaPreferencesActivity
     protected void onDestroy() {
     	super.onDestroy();
     	
-    	Config.mainInstance.finish();
-    	Intent it = new Intent(this, MainActivity.class);
-    	startActivity(it);
+    	Config.mainInstance.refresh();
     }
 } 

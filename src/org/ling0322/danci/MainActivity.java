@@ -30,20 +30,20 @@ public class MainActivity
         // some exceptions
         //
         super.onCreate(new Bundle());
-        setContentView(R.layout.main_tabs);
+        
         
         Config.mainInstance = this;
-        
+        setContentView(R.layout.main_tabs);
         mAdapter = new FragmentAdapter(getSupportFragmentManager());
-        
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-        mPager.setCurrentItem(1);
         
         mIndicator = (TabPageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
         mIndicator.setOnPageChangeListener(this);
-        mIndicator.setCurrentItem(1);
+        
+        refresh();
+
         
         Log.d("lia", "main on_create");
     }
@@ -101,6 +101,14 @@ public class MainActivity
             et.clearFocus();
     }
 
+    public void refresh() {
+        
+        mAdapter.notifyDataSetChanged();
+        mPager.setCurrentItem(1);
+
+        mIndicator.setCurrentItem(1);
+    }
+    
     public void closeIME() {
         EditText et = (EditText)findViewById(R.id.editText1);
         

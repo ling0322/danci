@@ -71,7 +71,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="点击这里选择单词表" />
+            android:text="点击这里进入zhe zhi" />
         
         <Button
             android:id="@+id/next_button"

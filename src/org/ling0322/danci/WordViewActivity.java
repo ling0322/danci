@@ -1,7 +1,8 @@
 package org.ling0322.danci;
 
 import java.util.*;
-import android.app.*;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.view.LayoutInflater;
@@ -32,9 +33,9 @@ class WordFragmentAdapter extends FragmentStatePagerAdapter {
     private Activity activity;
 
     public WordFragmentAdapter(FragmentManager fm, Activity activity, ArrayList<String> wordlist) {
-	super(fm);
-	this.wordlist = wordlist;
-	this.activity = activity;
+        super(fm);
+        this.wordlist = wordlist;
+        this.activity = activity;
     }
 
     @Override
