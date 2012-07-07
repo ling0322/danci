@@ -373,13 +373,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int dict_container=0x7f060003;
         public static final int editText1=0x7f060004;
         public static final int indicator=0x7f06000a;
-        public static final int init_button=0x7f060011;
+        public static final int init_button=0x7f06000f;
         public static final int linearLayout1=0x7f06001e;
         public static final int linearLayout2=0x7f060020;
         public static final int listView1=0x7f060005;
         public static final int menu_preferences=0x7f060023;
         public static final int next_button=0x7f060012;
-        public static final int no_button=0x7f060010;
+        public static final int no_button=0x7f060011;
         public static final int none=0x7f060000;
         public static final int pager=0x7f06000b;
         public static final int revButtonBack=0x7f06001b;
@@ -400,7 +400,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int word_defi_view=0x7f06000c;
         public static final int wordlistItemComment=0x7f060022;
         public static final int wordlistItemWord=0x7f060021;
-        public static final int yes_button=0x7f06000f;
+        public static final int yes_button=0x7f060010;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f090000;

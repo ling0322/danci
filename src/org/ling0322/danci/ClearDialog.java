@@ -6,12 +6,17 @@ import android.preference.*;
 import android.util.*;
 
 public class ClearDialog extends DialogPreference  {
+    private Context mContext;
+    
     public ClearDialog(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
     }
     
     private void resetReciting() {
-        SQLiteDatabase dbsqlite = Wordlist.openWordlistDb();
+        SQLiteDatabase dbsqlite = Wordlist.openWordlistDb(mContext);
+        if (dbsqlite == null)
+            return ;
         String sqlCmd = "update dict set tested = 0, correct = 0, continuous_correct = 0, last_tested = 0";
         dbsqlite.execSQL(sqlCmd);
         dbsqlite.close();

@@ -7,12 +7,6 @@
             android:defaultValue="true"
             android:summary="背单词过程中, 显示一个单词的时候自动发声"
             android:key="auto_speech" />
-            
-        <CheckBoxPreference
-            android:title="乱序背诵"
-            android:defaultValue="true"
-            android:summary="背单词过程中, 按照乱序排列单词出现的顺序"
-            android:key="random_order" />
                      
         <ListPreference 
             android:entries="@array/wordlists" 
@@ -24,12 +18,6 @@
             android:negativeButtonText="Cancel"
             android:enabled="true" 
             android:defaultValue="" />
-
-        <CheckBoxPreference
-            android:title="快速学习"
-            android:defaultValue="false"
-            android:summary="减少生词的复习次数，加快学习单词的进度"
-            android:key="quickLearning" />   
         
         <org.ling0322.danci.ClearDialog
             android:key="reciting_restart"

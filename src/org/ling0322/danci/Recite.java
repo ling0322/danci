@@ -2,6 +2,7 @@ package org.ling0322.danci;
 
 import java.util.*;
 
+import android.app.Activity;
 import android.database.*;
 import android.database.sqlite.*;
 import android.util.Log;
@@ -9,10 +10,10 @@ import android.util.Pair;
 
 class UpdateDatabase implements Runnable {
     private ArrayList<Pair<String, Boolean>> answerList;
-    private WordlistDB wl;
-    public UpdateDatabase(ArrayList<Pair<String, Boolean>> answerList) {
+    private WordlistModel wl;
+    public UpdateDatabase(Activity activity, ArrayList<Pair<String, Boolean>> answerList) {
         this.answerList = answerList;
-        this.wl = new WordlistDB();
+        this.wl = new WordlistModel(activity);
     }
     public void run() {
         wl.answerList(answerList);
@@ -22,8 +23,9 @@ class UpdateDatabase implements Runnable {
 
 public class Recite {
 
-    public final int NEW_WORD_PER_UNIT = 30;
-    public final int REVIEW_WORD_PER_UNIT = 30;
+    public final int WORDS_PER_UNIT = 30;
+    public final int MIN_NEW_WORDS = 5;
+    public final int MIN_REVIEW_WORDS = 10;
     
     private final int ST_FINISHED = 0;
     private final int ST_NEW = 1;
@@ -39,13 +41,14 @@ public class Recite {
     private int totalWord = -1;
     private int newWordCount = 0;
     private int reviewWordCount = 0;
-    private WordlistDB wldb;
+    private WordlistModel wldb;
     private ArrayList<Pair<String, Boolean>> answerList;
-    
+    private Activity mActivity;
 
-    public Recite() {
+    public Recite(Activity activity) {
         answerList = new ArrayList<Pair<String, Boolean>>();
-        wldb = new WordlistDB();
+        wldb = new WordlistModel(activity);
+        mActivity = activity;
         if (wldb.isNullDbConn() == true)
             return ;
         totalWord = wldb.totalWord();
@@ -63,7 +66,7 @@ public class Recite {
         switch (cntState) {
         case ST_FINISHED:
             int unpass = wldb.getProgress();
-            String cntwl = Wordlist.currentWordList();
+            String cntwl = Wordlist.currentWordList(mActivity);
             return String.format(
                 "%s→当前进度: %d/%d %d%%",
                 cntwl,
@@ -91,8 +94,10 @@ public class Recite {
         if (cntState == ST_FINISHED) {
             cntState = ST_NEW;
             wordList.clear();
+            int minReviewWords = Math.min(MIN_REVIEW_WORDS, reviewWords);
+            int nNewWords = Math.max(MIN_NEW_WORDS, WORDS_PER_UNIT - minReviewWords - reviewWords / 10);
             if (reviewWords < 300) {
-                wordList = wldb.newWordList(NEW_WORD_PER_UNIT - (int)(reviewWords / 10));
+                wordList = wldb.newWordList(nNewWords);
                 newWordCount = wordList.size();
             }
             switchState();
@@ -104,7 +109,7 @@ public class Recite {
         if (wordList.size() == 0) {
             switch(cntState) {
             case ST_NEW:
-                wordList = wldb.reviewList(REVIEW_WORD_PER_UNIT);
+                wordList = wldb.reviewList(WORDS_PER_UNIT - newWordCount);
                 reviewWordCount = wordList.size();
                 cntState = ST_REVIEW;
                 switchState();
@@ -116,7 +121,7 @@ public class Recite {
                 // During the drill period, there is no database IO, so we could
                 // now start to write back to database
                 //
-                updateThread = new Thread(new UpdateDatabase(answerList));
+                updateThread = new Thread(new UpdateDatabase(mActivity, answerList));
                 updateThread.start();
                 sqlUpdateBuffer.clear();
                 switchState();

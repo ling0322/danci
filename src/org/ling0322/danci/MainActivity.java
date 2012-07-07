@@ -1,6 +1,8 @@
 package org.ling0322.danci;
 
 import com.viewpagerindicator.TabPageIndicator;
+
+import android.app.Activity;
 import android.content.*;
 import android.os.*;
 import android.util.Log;
@@ -19,6 +21,7 @@ public class MainActivity
     private ViewPager mPager = null;
     private TabPageIndicator mIndicator = null;
     private FragmentAdapter mAdapter;
+    public final static int PREFERENCE_REQUEST_ID = 233;
     
     public FragmentAdapter getFragmentAdapter() {
     	return mAdapter;
@@ -30,11 +33,14 @@ public class MainActivity
         // some exceptions
         //
         super.onCreate(new Bundle());
-        
-        
-        Config.mainInstance = this;
+        if (false == InitActivity.isFileAllExists()) {
+            Intent it = new Intent(this, InitActivity.class);
+            startActivity(it);
+            finish();
+            return ;
+        }
         setContentView(R.layout.main_tabs);
-        mAdapter = new FragmentAdapter(getSupportFragmentManager());
+        mAdapter = new FragmentAdapter(getSupportFragmentManager(), this);
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         
@@ -42,7 +48,8 @@ public class MainActivity
         mIndicator.setViewPager(mPager);
         mIndicator.setOnPageChangeListener(this);
         
-        refresh();
+        mPager.setCurrentItem(1);
+        mIndicator.setCurrentItem(1);
 
         
         Log.d("lia", "main on_create");
@@ -60,13 +67,30 @@ public class MainActivity
         switch (item.getItemId()) {
         case Menu.FIRST:
             Intent it = new Intent(this, LiaPreferencesActivity.class);
-            startActivity(it);
+            startActivityForResult(it, PREFERENCE_REQUEST_ID);
             break;
         case Menu.FIRST + 1:
             System.exit(0);
             break;
         }
         return false;
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        
+        switch (requestCode) {
+        case PREFERENCE_REQUEST_ID:
+            if (resultCode != Activity.RESULT_OK)
+                return ;
+            
+            Bundle b = data.getExtras();
+
+            boolean needsRefresh = b.getBoolean("bNeedsRefresh");
+            if (needsRefresh == true) {
+                refresh();
+            }
+        }
     }
     
     //
@@ -102,11 +126,10 @@ public class MainActivity
     }
 
     public void refresh() {
-        
-        mAdapter.notifyDataSetChanged();
         mPager.setCurrentItem(1);
-
         mIndicator.setCurrentItem(1);
+        for (int i = 0; i < mAdapter.getCount(); ++i)
+            mAdapter.getItem(i).onRefresh();
     }
     
     public void closeIME() {
@@ -141,7 +164,7 @@ public class MainActivity
     }
 
     public void onPageSelected(int arg0) {
-    	CustomFragment fragment = mAdapter.getItem(arg0);
+    	BaseFragment fragment = mAdapter.getItem(arg0);
     	fragment.onPageSelected();
     }
 }

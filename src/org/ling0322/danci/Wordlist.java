@@ -2,14 +2,16 @@ package org.ling0322.danci;
 
 import java.util.HashMap;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 
 public class Wordlist {
     public static HashMap<String, SQLiteDatabase> wordlistDbConnMap = new HashMap<String, SQLiteDatabase>();
-    public static SQLiteDatabase openWordlistDb() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Config.mainInstance);
+    public static SQLiteDatabase openWordlistDb(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String wordlistName = sp.getString("wordlist", "");
         if (wordlistName.equals(""))
             return null;
@@ -40,13 +42,13 @@ public class Wordlist {
         return null;
     }
     
-    public static String currentWordList() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Config.mainInstance);
+    public static String currentWordList(Activity activity) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         return sp.getString("wordlist", "");        
     }
     
-    public static boolean isRandomOrder() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Config.mainInstance);
+    public static boolean isRandomOrder(Activity activity) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         return sp.getBoolean("random_order", true);
     }
 

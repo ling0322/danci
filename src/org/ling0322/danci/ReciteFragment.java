@@ -1,17 +1,10 @@
 package org.ling0322.danci;
 
-import java.io.*;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.media.*;
 import android.os.Bundle;
-import android.preference.*;
-import android.support.v4.app.*;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,102 +13,228 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 
 
-public class ReciteFragment extends CustomFragment implements OnClickListener {
+public class ReciteFragment extends BaseFragment implements OnClickListener {
     /** Called when the activity is first created. */
     
-    private Recite recite;
+    private Recite mRecite;
     
-    private Button startButton;
-    private Button yesButton;
-    private Button noButton;
-    private Button nextButton;
-    private Button initButton;
+    private Button mStartButton;
+    private Button mYesButton;
+    private Button mNoButton;
+    private Button mNextButton;
+    private Button mInitButton;
+    private LinearLayout mButtonContainer;
+    private TextView mStateMessage;
+    private ReviewListFragment mReviewListFragment;
+    private LinearLayout mDefinitionContainer;
+    private RecitingMachine mRecitingMachine;
+    private Speech mSpeech;
+    private SharedPreferences mPreferences;
     
-    private MediaPlayer mp;
-    private SharedPreferences prefs;
-    private MainActivity mainActivity;
 
-    private View fragmentView;
+    private class IState {
+        public void onStartButton() {}
+        public void onYesButton() {}
+        public void onNoButton() {}
+        public void onNextButton() {}
+        public void onStateSwitchedTo() {}
+    }
     
-    public ReciteFragment() {
-        //
-        // the player to play speech audio
-        //
-        mp = new MediaPlayer();
+    private class StateEnd extends IState {
+        private RecitingMachine mReciteMachine;
         
-    }
-    
-    private void showStartButton() {
-        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
-        la.removeAllViews();
-        la.addView(startButton);
-    }
-    
-    private void showTestButtons() {
-        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
-        la.removeAllViews();
-        noButton.setText("不记得了 TwT");
-        yesButton.setText("我知道 :)");
-        la.addView(noButton);
-        la.addView(yesButton);
-    }
-    
-    private void showTest2Buttons() {
-        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
-        la.removeAllViews();
-        noButton.setText("记错了 QAQ");
-        yesButton.setText("正确 =w=");
-        la.addView(noButton);
-        la.addView(yesButton);
-    }
-    
-    private void showNextButton() {
-        LinearLayout la = (LinearLayout)fragmentView.findViewById(R.id.button_container);
-        la.removeAllViews();
-        la.addView(nextButton);        
-    }
-    
-    private final int FIRST = 0;
-    private final int SECOND = 1;    
-    private int state = FIRST;
-    
-    private void speech(String word) {
-        File speechFile = new File(String.format("%s/%c/%s.mp3", Config.SPEECH_PATH, word.charAt(0), word));
-        if (speechFile.exists() == false)
-            return ;
+        public StateEnd(RecitingMachine reciteMachine) {
+            mReciteMachine = reciteMachine;
+        }
         
-        try {
-            if (mp.isPlaying()) {
-                mp.stop();
-            }
-            mp.reset();
-            mp.setVolume(1, 1);
-            mp.setDataSource(speechFile.getAbsolutePath());
-            mp.prepare();
-            mp.start();
+        public void onStateSwitchedTo() {
+            mDefinitionContainer.removeAllViews();
             
-        } catch (Exception e) {
-            e.printStackTrace();
+            mRecite = new Recite(getActivity());
+            
+            if (mRecite.isNullDbConn() == true) {
+                mStateMessage.setText("单词喵喵喵: 请先点击下方按钮, 选择一个的单词表");
+                showInitButton();
+                return ;
+            }
+ 
+            mStateMessage.setText(mRecite.getCntState());
+            
+            // refresh review list to apply current changes
+            
+            mReviewListFragment.refleshList();
+            
+            showStartButton();
+        }
+        
+        public void onStartButton() {
+            mRecite.start();
+            mReciteMachine.setState(mReciteMachine.getFirstState());
         }
     }
     
-    public void recitingFinish() {
-        recite.finish();
-        updateDiaplay();
+    private class StateFirst extends IState {
+        private RecitingMachine mReciteMachine;
+        
+        public StateFirst(RecitingMachine reciteMachine) {
+            mReciteMachine = reciteMachine;
+        }
+        
+        public void onStateSwitchedTo() {
+
+            mDefinitionContainer.removeAllViews();
+            boolean isAutoSpeak = mPreferences.getBoolean("auto_speech", false);
+            if (isAutoSpeak == true)
+                mSpeech.speak(mRecite.pickWord());
+            showWordDefi(mRecite.pickWord(), true);
+            showTestButtons();
+            mStateMessage.setText(mRecite.getCntState());
+        }
+
+        public void onYesButton() {
+            mReciteMachine.setState(mReciteMachine.getSecondState());
+            showTest2Buttons();
+        }
+
+        public void onNoButton() {
+            mReciteMachine.setState(mReciteMachine.getSecondState());
+            showNextButton();
+        }
+    }
+    
+    private class StateSecond extends IState {
+        
+        private RecitingMachine mReciteMachine;
+        
+        public StateSecond(RecitingMachine reciteMachine) {
+            mReciteMachine = reciteMachine;
+        }
+        
+        public void onStateSwitchedTo() {
+            mDefinitionContainer.removeAllViews();
+            showTest2Buttons();
+            showWordDefi(mRecite.pickWord(), false);
+        }
+        
+        public void onYesButton() {
+            mRecite.answer(true);
+            if (mRecite.isFinsihed()) 
+                mReciteMachine.setState(mReciteMachine.getEndSteate());
+            else
+                mReciteMachine.setState(mReciteMachine.getFirstState());
+        }
+
+        public void onNoButton() {
+            mRecite.answer(false);
+            mReciteMachine.setState(mReciteMachine.getFirstState());
+            
+            // NoButton click event wouldn't switch state to end
+        }
+
+        public void onNextButton() {
+            mRecite.answer(false);
+            if (mRecite.isFinsihed()) 
+                mReciteMachine.setState(mReciteMachine.getEndSteate());
+            else
+                mReciteMachine.setState(mReciteMachine.getFirstState());
+        }
+        
+    }
+    
+    private class RecitingMachine {
+        private IState mCurrentState;
+        private IState mFirstState;
+        private IState mSecondState;
+        private IState mEndState;
+        
+        public RecitingMachine() {
+            mFirstState = new StateFirst(this);
+            mSecondState = new StateSecond(this);
+            mEndState = new StateEnd(this);
+        }
+        
+        public IState getFirstState() {
+            return mFirstState;
+        }
+        
+        public IState getSecondState() {
+            return mSecondState;
+        }
+
+        public IState getEndSteate() {
+            return mEndState;
+        }
+        
+        public void setState(IState state) {
+            mCurrentState = state;
+            mCurrentState.onStateSwitchedTo();
+        }
+
+        public void onStartButton() {
+            mCurrentState.onStartButton();
+        }
+
+        public void onYesButton() {
+            mCurrentState.onYesButton();
+        }
+
+        public void onNoButton() {
+            mCurrentState.onNoButton();
+        }
+
+        public void onNextButton() {
+            mCurrentState.onNextButton();
+        }
+        
+    }
+    
+
+    
+    public ReciteFragment() {
+    }
+    
+    private void showStartButton() {
+        mButtonContainer.removeAllViews();
+        mButtonContainer.addView(mStartButton);
+    }
+    
+    private void showInitButton() {
+        mButtonContainer.removeAllViews();
+        mButtonContainer.addView(mInitButton);
+    }    
+    
+    private void showTestButtons() {
+        mButtonContainer.removeAllViews();
+        mNoButton.setText("不记得了 TwT");
+        mYesButton.setText("我知道 :)");
+        mButtonContainer.addView(mNoButton);
+        mButtonContainer.addView(mYesButton);
+    }
+    
+    private void showTest2Buttons() {
+        mButtonContainer.removeAllViews();
+        mNoButton.setText("记错了 QAQ");
+        mYesButton.setText("正确 =w=");
+        mButtonContainer.addView(mNoButton);
+        mButtonContainer.addView(mYesButton);
+    }
+    
+    private void showNextButton() {
+        mButtonContainer.removeAllViews();
+        mButtonContainer.addView(mNextButton);        
     }
     
     private void showWordDefi(String word, boolean hideDefi) {
         int screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
-        View v = DefinitionView.getDefinitionView(getActivity(), word, hideDefi);
-        LinearLayout containerView = (LinearLayout)getActivity().findViewById(R.id.word_defi_view);
+        View definitionView = DefinitionView.getDefinitionView(getActivity(), word, hideDefi);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.FILL_PARENT,
             LinearLayout.LayoutParams.FILL_PARENT
             );
         lp.setMargins(screenWidth / 40, 0, screenWidth / 40, 0);
-        v.setLayoutParams(lp);
-        containerView.removeAllViews();
-        containerView.addView(v);    
+        definitionView.setLayoutParams(lp);
+        mDefinitionContainer.removeAllViews();
+        mDefinitionContainer.addView(definitionView);    
     }
 
     @Override
@@ -128,165 +247,80 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        MainActivity mainActivity = (MainActivity)getActivity();
         if (mainActivity != null)
             mainActivity.closeIME();
     }
     
-    private void updateDiaplay() {
-        if (true == recite.isNullDbConn())
-            return ;
-        String reciting_mode = prefs.getString("reciting_mode", "word_to_definition");
-        Log.i("lia", reciting_mode);
-        boolean speech = prefs.getBoolean("auto_speech", false);
-        ((LinearLayout)getActivity().findViewById(R.id.word_defi_view)).removeAllViews();
-        if (recite.isFinsihed()) {
-            ((ReviewListFragment)mainActivity.getFragmentAdapter().getItem(2)).refleshList();
-            showStartButton();
-            TextView t = (TextView)getActivity().findViewById(R.id.textView1);
-            t.setText(recite.getCntState());
-            return ;
-        }
-        if (state == FIRST) {
-            if (reciting_mode.equals("word_to_definition")) {
-                if (speech == true) {
-                    speech(recite.pickWord());
-                }
-                showWordDefi(recite.pickWord(), true);
-            } else {
-                showWordDefi(recite.pickWord(), true);       
-            }
-
-        } else if (state == SECOND) {
-            if (reciting_mode.equals("definition_to_word")) {
-                speech(recite.pickWord());
-            }
-            showWordDefi(recite.pickWord(), false);
-        }
-        TextView tv = (TextView)getActivity().findViewById(R.id.textView1);
-        tv.setText(recite.getCntState());
-    }
     
-    private void onStartButtonClicked() {
-        state = FIRST;
-        recite.start();
-        showTestButtons();
-        updateDiaplay();
-    }
-    
-    private void onYesButtonClicked() {
-        if (state == FIRST) {
-            state = SECOND;
-            showTest2Buttons();
-            updateDiaplay();
-        } else if (state == SECOND) {
-            recite.answer(true);
-            state = FIRST;
-            showTestButtons();
-            updateDiaplay();
-        }
-    }
-    
-    private void onNoButtonClicked() {
-        if (state == FIRST) {
-            showNextButton();
-            state = SECOND;
-            updateDiaplay();
-        } else if (state == SECOND) {
-            recite.answer(false);
-            state = FIRST;
-            showTestButtons();
-            updateDiaplay();
-        }
-    }
-    
-    private void onNextButtonClicked() {
-        recite.answer(false);
-        showTestButtons();
-        state = FIRST;
-        updateDiaplay();
-    }
-    
+ 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    	
-        fragmentView = inflater.inflate(R.layout.recite, container, false);
-        TextView t = (TextView)fragmentView.findViewById(R.id.textView1);        
-        recite = new Recite();
-        mainActivity = (MainActivity)getActivity();
-        
-        startButton = (Button)fragmentView.findViewById(R.id.start_button);
-        yesButton = (Button)fragmentView.findViewById(R.id.yes_button);
-        noButton = (Button)fragmentView.findViewById(R.id.no_button);
-        nextButton = (Button)fragmentView.findViewById(R.id.next_button);
-        initButton = (Button)fragmentView.findViewById(R.id.init_button);
-        
-        startButton.setOnClickListener(this);
-        yesButton.setOnClickListener(this);
-        noButton.setOnClickListener(this);
-        nextButton.setOnClickListener(this);
-        initButton.setOnClickListener(this);
-        
-        if (recite.isNullDbConn() == true) {
-            t.setText("单词喵喵喵: 请先选择一个的单词表");
-            startButton.setVisibility(View.GONE);
-            yesButton.setVisibility(View.GONE);
-            noButton.setVisibility(View.GONE);
-            nextButton.setVisibility(View.GONE);
-            return fragmentView;
-        }
-            
-
-        t.setText(recite.getCntState());
-        showStartButton();
-        return fragmentView;
+        return inflater.inflate(R.layout.recite, container, false);
 
     }
 
     @Override 
     public boolean onBackKey() {
-        Dialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AnneDialog))
-            .setMessage("确定要退出吗?")
-            .setPositiveButton("退出", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int arg1) {
-                    System.exit(0);
-                }    
-            })
-            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface arg0, int arg1) {
-                }                    
-            }).create();
-        dialog.show(); 
+        System.exit(0);
         return true;
-    }
-    public void onDetach() {
-        super.onDetach();
 
     }
+
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+     
+        mRecite = new Recite(getActivity());
+        MainActivity mainActivity = (MainActivity)getActivity();
         
+        mButtonContainer = (LinearLayout)getActivity().findViewById(R.id.button_container);
+        mStartButton = (Button)getActivity().findViewById(R.id.start_button);
+        mYesButton = (Button)getActivity().findViewById(R.id.yes_button);
+        mNoButton = (Button)getActivity().findViewById(R.id.no_button);
+        mNextButton = (Button)getActivity().findViewById(R.id.next_button);
+        mInitButton = (Button)getActivity().findViewById(R.id.init_button);
+        mDefinitionContainer = (LinearLayout)getActivity().findViewById(R.id.word_defi_view);
+        
+        mStartButton.setOnClickListener(this);
+        mYesButton.setOnClickListener(this);
+        mNoButton.setOnClickListener(this);
+        mNextButton.setOnClickListener(this);
+        mInitButton.setOnClickListener(this);
+        
+        mStateMessage = (TextView)getActivity().findViewById(R.id.textView1);
+        mReviewListFragment = ((ReviewListFragment)mainActivity.getFragmentAdapter().getItem(2));   
+        
+        mRecitingMachine = new RecitingMachine();
+        mRecitingMachine.setState(mRecitingMachine.getEndSteate());
+        mSpeech = new Speech(getActivity());
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
     
     public void onClick(View arg0) {
         switch(arg0.getId()) {
         case R.id.start_button:
-            onStartButtonClicked();
+            mRecitingMachine.onStartButton();
             break;
         case R.id.no_button:
-            onNoButtonClicked();
+            mRecitingMachine.onNoButton();
             break;
         case R.id.yes_button:
-            onYesButtonClicked();
+            mRecitingMachine.onYesButton();
             break;
         case R.id.next_button:
-            onNextButtonClicked();
+            mRecitingMachine.onNextButton();
             break;
         case R.id.init_button:
             Intent it = new Intent(getActivity(), LiaPreferencesActivity.class);
-            startActivity(it);
+            getActivity().startActivityForResult(it, MainActivity.PREFERENCE_REQUEST_ID);
         }
+    }
+    
+    @Override 
+    public boolean onRefresh() {
+        mRecitingMachine.setState(mRecitingMachine.getEndSteate());
+        return true;
     }
 }

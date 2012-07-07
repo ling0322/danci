@@ -26,7 +26,7 @@ public class DefinitionView {
         String defiJson = dict12Dict.getDefinition(word.toLowerCase());
         String pron = null;
         String defi = null;
-        Speech speech = Speech.getInstance();
+        Speech speech = new Speech(activity);
         ArrayList<String> examplesOrig = new ArrayList<String>();
         ArrayList<String> examplesTrans = new ArrayList<String>();
         if (lingoesFont == null) {

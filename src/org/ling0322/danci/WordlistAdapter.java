@@ -58,7 +58,7 @@ public class WordlistAdapter extends BaseAdapter {
 		wordText.setText(list.get(arg0));
 		if (remainsCount != null) {
 	        TextView commentText = (TextView)view.findViewById(R.id.wordlistItemComment);
-	        commentText.setText(String.format("需复习%d次", WordlistDB.REVIEW_TIMES - remainsCount.get(arg0)));		    
+	        commentText.setText(String.format("需复习%d次", WordlistModel.REVIEW_TIMES - remainsCount.get(arg0)));		    
 		}
 		viewsList.set(arg0, view);
 		return view;

@@ -10,6 +10,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 class CheckUsefulFiles implements Runnable {
@@ -117,49 +120,44 @@ class CheckUsefulFiles implements Runnable {
 	}
 }
 
-public class InitActivity extends Activity {
+public class InitActivity extends Activity implements OnClickListener {
 	private Handler handler;
 	private TextView initText;
-    
+    private final int PREFERENCE_REQUEST_ID = 234;
 
     
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.init);
 		initText = (TextView)findViewById(R.id.textView1);
-		initText.setText("少女祈祷中...");
-
-		
-		
-		if (isFileAllExists() == false) {
-			handler = new Handler() {
-			    @Override
-			    public void handleMessage(Message msg) {
-			        switch(msg.what){
-			        case 0:
-			        	initText.setText((String)msg.obj);
-			            break;
-			        case 1:
-			    		Intent it = new Intent(InitActivity.this, MainActivity.class);
-			    		startActivity(it);
-			    		finish();
-			    		break;
-			        }
-			    }
-			};
-		    //
-		    // Create check thread
-		    //
-			Thread installThread = new Thread(new CheckUsefulFiles(this, handler));
-			installThread.start();
-		} else {
-    		Intent it = new Intent(InitActivity.this, MainActivity.class);
-    		startActivity(it);
-    		finish();
-		}
-
-		
-    }	
+        initText.setText("少女祈祷中...");
+        
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch(msg.what){
+                case 0:
+                    initText.setText((String)msg.obj);
+                    break;
+                case 1:
+                    if (isFileAllExists() == false) {
+                        initText.setText("安装失败, 少女哭泣中 TwT");
+                    } else {
+                        Intent it = new Intent(InitActivity.this, MainActivity.class);
+                        startActivity(it);
+                        finish();
+                    }
+                    break;
+                }
+            }
+        };
+        //
+        // Create check thread
+        //
+        Thread installThread = new Thread(new CheckUsefulFiles(this, handler));
+        installThread.start();	
+    }
+    
     public static boolean isFileAllExists() {
     	ArrayList<File> al = new ArrayList<File>();
 		al.add(new File(Config.LIA_PATH));
@@ -171,10 +169,17 @@ public class InitActivity extends Activity {
 		al.add(new File(Config.WL_TOFEL_PATH));
 		al.add(new File(Config.WL_GRE_PATH));
 		for (File fp : al) {
-    	    if (fp.exists() == false || fp.length() < 10 * 1024)
+    	    if (fp.exists() == false)
     	    	return false;
+    	    if (fp.isFile() && fp.length() < 10 * 1024)
+    	        return false;
 		}
 		return true;
+    }
+
+    public void onClick(View arg0) {
+        Intent it = new Intent(this, LiaPreferencesActivity.class);
+        startActivityForResult(it, PREFERENCE_REQUEST_ID);
     }
 
 

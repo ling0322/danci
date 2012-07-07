@@ -3,17 +3,25 @@ package org.ling0322.danci;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.*;
 import android.util.*;
 
-public class WordlistDB {
+public class WordlistModel {
+    public WordlistModel(Activity activity) {
+        mActivity = activity;
+    }
+    
     public static final int REVIEW_TIMES = 4;
+    private Activity mActivity;
+    
+
 
     public int getProgress() {
         String sqlCmd;
         Cursor c;
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         sqlCmd = "select count(*) from dict where tested = 0";
         c = conn.rawQuery(sqlCmd, null);
         c.moveToFirst();
@@ -36,7 +44,7 @@ public class WordlistDB {
         Cursor c;
         Date d = new Date();
         long cntSecond = d.getTime() / 1000;
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         
         sqlCmd = String.format(
             "select count(*) from dict where tested != correct and continuous_correct < %d and last_tested / (60 * 24 * 60) != %d",
@@ -56,7 +64,7 @@ public class WordlistDB {
         sqlCmd = String.format(
             "select count(*) from dict where tested != correct and continuous_correct < %d",
             REVIEW_TIMES);
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         c = conn.rawQuery(sqlCmd, null);
         c.moveToFirst();
         int nReviewWord = c.getInt(0);
@@ -72,7 +80,7 @@ public class WordlistDB {
             REVIEW_TIMES,
             wordPerPage,
             wordPerPage * page);
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         Cursor c = conn.rawQuery(sqlCmd, null);
         ArrayList<String> reviewWords = new ArrayList<String>();
         ArrayList<Integer> remainsList = new ArrayList<Integer>();
@@ -92,12 +100,12 @@ public class WordlistDB {
         Date d = new Date();
         long cntSecond = d.getTime() / 1000;
         String sqlCmd;
-        if (Wordlist.isRandomOrder() == true) {
+        if (Wordlist.isRandomOrder(mActivity) == true) {
             sqlCmd = "select word from dict where tested != correct and continuous_correct < %d and last_tested / (60 * 24 * 60) != %d order by random() limit %d";
         } else {
             sqlCmd = "select word from dict where tested != correct and continuous_correct < %d and last_tested / (60 * 24 * 60) != %d order by word limit %d";
         }
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         Cursor c = conn.rawQuery(
             String.format(sqlCmd, REVIEW_TIMES, cntSecond / (24 * 60 * 60), numWord), null);
         ArrayList<String> reviewWords = new ArrayList<String>();
@@ -113,9 +121,9 @@ public class WordlistDB {
 
     public ArrayList<String> newWordList(int limit) {
         String sqlCmd;
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
     
-        if (Wordlist.isRandomOrder() == true) {
+        if (Wordlist.isRandomOrder(mActivity) == true) {
             sqlCmd = String.format("select word from dict where tested = 0 order by random() limit %d", limit);
         } else {
             sqlCmd = String.format("select word from dict where tested = 0 order by word limit %d", limit);
@@ -134,7 +142,7 @@ public class WordlistDB {
     
     public void answerList(ArrayList<Pair<String, Boolean>> answerList) {
         Log.d("wldb", "answerList called");
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         conn.beginTransaction();
         String cmd;
         Date d = new Date();
@@ -158,7 +166,7 @@ public class WordlistDB {
     
     public int totalWord() {
         int totalWord;
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         String sqlCmd = "select count(*) from dict";
         Cursor c = conn.rawQuery(sqlCmd, null);
         c.moveToFirst();
@@ -169,7 +177,7 @@ public class WordlistDB {
     }
     
     public boolean isNullDbConn() {
-        SQLiteDatabase conn = Wordlist.openWordlistDb();
+        SQLiteDatabase conn = Wordlist.openWordlistDb(mActivity);
         if (conn == null)
             return true;
         

@@ -16,13 +16,13 @@ import android.support.v4.app.*;
 
 
 public class DictionaryFragment 
-    extends CustomFragment 
+    extends BaseFragment 
     implements TextWatcher, OnItemClickListener, OnClickListener, 
                 OnFocusChangeListener, OnKeyListener {
     
     public WordlistAdapter adapter;
-    private EditText et = null;
-    private Button backButton = null;
+    private EditText mEditText = null;
+    private Button mBackButton = null;
     public ArrayList<String> wordlist;
     private Dictionary dict12;
     
@@ -31,7 +31,7 @@ public class DictionaryFragment
     	LinearLayout dictButtonContainer = (LinearLayout)getActivity().findViewById(R.id.dictButtonContainer);
     	View listView = getActivity().findViewById(R.id.listView1);
     	
-    	et.setVisibility(View.GONE);
+    	mEditText.setVisibility(View.GONE);
     	listView.setVisibility(View.GONE);
     	defiContainer.setVisibility(View.VISIBLE);
     	dictButtonContainer.setVisibility(View.VISIBLE);
@@ -44,7 +44,7 @@ public class DictionaryFragment
         int screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         lp.setMargins(screenWidth / 40, 0, screenWidth / 40, 0);
 		sv.setLayoutParams(lp);
-		mainActivity.closeIME();
+		((MainActivity)getActivity()).closeIME();
     }
 
     private void hideDefinition() {
@@ -53,9 +53,9 @@ public class DictionaryFragment
     	View editText = getActivity().findViewById(R.id.editText1);
     	View listView = getActivity().findViewById(R.id.listView1);
     	
-    	et.setVisibility(View.VISIBLE);
-    	et.selectAll();
-    	mainActivity.openIME(et);
+    	mEditText.setVisibility(View.VISIBLE);
+    	mEditText.selectAll();
+    	((MainActivity)getActivity()).openIME(mEditText);
     	
     	listView.setVisibility(View.VISIBLE);
     	defiContainer.setVisibility(View.GONE);
@@ -74,23 +74,6 @@ public class DictionaryFragment
         adapter.notifyDataSetChanged();
     }
     
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("danci", "dict frag start");
-    }
-    
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("danci", "dict frag destroy");
-    }
-   
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("danci", "dict frag resume");
-    }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,14 +84,22 @@ public class DictionaryFragment
         Log.d("danci", "dict frag create view");
         View view = inflater.inflate(R.layout.dict, container, false);
         
-        ListView lv = (ListView)view.findViewById(R.id.listView1);
         
-        et = (EditText)view.findViewById(R.id.editText1);
-        et.addTextChangedListener(this);
+        return view;
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        et.setOnClickListener(this);
-        et.setOnKeyListener(this);
-        et.setOnFocusChangeListener(this);
+        ListView lv = (ListView)getActivity().findViewById(R.id.listView1);
+        
+        mEditText = (EditText)getActivity().findViewById(R.id.editText1);
+        mEditText.addTextChangedListener(this);
+
+        mEditText.setOnClickListener(this);
+        mEditText.setOnKeyListener(this);
+        mEditText.setOnFocusChangeListener(this);
         wordlist =  new ArrayList<String>();
         
         adapter = new WordlistAdapter(wordlist, getActivity());
@@ -118,19 +109,11 @@ public class DictionaryFragment
         //
         // Back button event
         //
-        backButton = (Button)view.findViewById(R.id.dictBackButton);
-        backButton.setOnClickListener(this);
+        mBackButton = (Button)getActivity().findViewById(R.id.dictBackButton);
+        mBackButton.setOnClickListener(this);
         
-        mainActivity = (MainActivity)getActivity();
         Log.d("danci", "dict frag activity created");
         
-        return view;
-    }
-    
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
     }
 
 
@@ -143,13 +126,13 @@ public class DictionaryFragment
 
     
     public void onPageSelected() {
-    	if (et != null && et.getVisibility() == View.VISIBLE) {
+    	if (mEditText != null && mEditText.getVisibility() == View.VISIBLE) {
     		
             // if not setSelection here, the action bar may be displayed
-    		et.setSelection(0, 0);
-    		et.requestFocus();
-    		et.selectAll();
-    		mainActivity.openIME(et);
+    		mEditText.setSelection(0, 0);
+    		mEditText.requestFocus();
+    		mEditText.selectAll();
+    		((MainActivity)getActivity()).openIME(mEditText);
     	}
     }
 
@@ -164,7 +147,7 @@ public class DictionaryFragment
 
     @Override
     public boolean onBackKey() {
-        if (et.getVisibility() == View.GONE) {
+        if (mEditText.getVisibility() == View.GONE) {
     	    hideDefinition();
 		    return true;
         } else {
@@ -173,16 +156,16 @@ public class DictionaryFragment
     }
     
     public void onFocusChange(View view, boolean b) {
-        if (view == et && b == true) {
+        if (view == mEditText && b == true) {
             // et.selectAll();
         }
     }
 
     public void onClick(View view) {
-        if (view == et) {
+        if (view == mEditText) {
         	
             // et.selectAll();
-        } else if (view == backButton) {
+        } else if (view == mBackButton) {
         	hideDefinition();
         }
         

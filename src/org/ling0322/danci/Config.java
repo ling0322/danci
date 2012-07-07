@@ -1,7 +1,6 @@
 package org.ling0322.danci;
 
 
-import android.app.Activity;
 import android.os.Environment;
 
 public class Config {
@@ -20,6 +19,5 @@ public class Config {
     public final static String DICT_EC_PATH = LIA_PATH + "/dict-ec";
     public final static int DICT_12_PARTS = 16;
     public final static int REVIEWLIST_WORDS_PER_PAGE = 50;
-    public static MainActivity mainInstance;
     
 }

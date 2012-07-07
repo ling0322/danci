@@ -11,9 +11,9 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ReviewListFragment extends CustomFragment implements OnClickListener, OnItemClickListener {
+public class ReviewListFragment extends BaseFragment implements OnClickListener, OnItemClickListener {
     
-    private WordlistDB wldb;
+    private WordlistModel wldb;
     private TextView progress;
     private TextView wordsMessage;
     private ListView listview;
@@ -71,7 +71,7 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(this);
         currentPage = 0;
-        wldb = new WordlistDB();
+        wldb = new WordlistModel(getActivity());
         if (wldb.isNullDbConn() == true) {
             buttonContainer.setVisibility(View.GONE);
             return ;
@@ -117,6 +117,8 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
     }
     
     public void refleshList() {
+        if (progress == null)
+            return ;
         if (wldb == null) {
             progress.setText("生词本为空");
             buttonContainer.setVisibility(View.GONE);
@@ -133,9 +135,11 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
             progress.setText(String.format("生词本→合计: %d个单词 - 第%d页/共%d页", reviewCount, currentPage + 1, pageMax));
         }
         wordlist.clear();
+        remainsList.clear();
         Pair<ArrayList<String>, ArrayList<Integer>> pair = wldb.reviewListAll(
                 Config.REVIEWLIST_WORDS_PER_PAGE, currentPage);
         wordlist.addAll(pair.first);
+        
         remainsList.addAll(pair.second);
         Log.d("lia", String.valueOf(wordlist.size()));
         adapter.notifyDataSetChanged();
@@ -157,6 +161,13 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
         } else if (view == prevWordButton) {
             displayWord(currentWordIndex - 1);
         }   
+    }
+    
+    @Override
+    public boolean onRefresh() {
+        showListView();
+        refleshList();
+        return true;
     }
 
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="StyledIndicators" parent="@android:style/Theme.Holo">
+    <style name="StyledIndicators" parent="@android:style/Theme.Light">
 
     </style>
-    <style name="Anne" parent="@android:style/Theme.Holo.Light.NoActionBar"> 
+    <style name="Anne" parent="@android:style/Theme.Light.NoTitleBar"> 
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:background">#FFFFFF</item>
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
     </style>
-    <style name="AnneDialog" parent="android:style/Theme.Holo.Dialog"> 
+    <style name="AnneDialog" parent="android:style/Theme.Dialog"> 
         <item name="android:windowFrame">@drawable/btn_blue</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:windowBackground">@drawable/btn_blue</item>
