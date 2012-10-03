@@ -3,8 +3,10 @@ package org.ling0322.danci;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.*;
+import android.preference.PreferenceManager;
 import android.util.*;
 
 public class WordlistDB {
@@ -66,6 +68,9 @@ public class WordlistDB {
     }        
     
     public Pair<ArrayList<String>, ArrayList<Integer>> reviewListAll(int wordPerPage, int page) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Config.mainInstance);
+        boolean mIsQuickMode = sp.getBoolean("quickLearning", false);
+        int step = mIsQuickMode? 2: 1;
         String sqlCmd;
         sqlCmd = String.format(
             "select word, continuous_correct from dict where tested != correct and continuous_correct < %d limit %d offset %d",
@@ -79,7 +84,8 @@ public class WordlistDB {
         c.moveToFirst();
         for (int i = 0; i < c.getCount(); ++i) {
             reviewWords.add(c.getString(0));
-            remainsList.add(c.getInt(1));
+            remainsList.add((int)Math.ceil(
+                ((REVIEW_TIMES - c.getInt(1)) / (float)step)));
             c.moveToNext();
         }
         c.close();
@@ -134,6 +140,9 @@ public class WordlistDB {
     
     public void answerList(ArrayList<Pair<String, Boolean>> answerList) {
         Log.d("wldb", "answerList called");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Config.mainInstance);
+        boolean mIsQuickMode = sp.getBoolean("quickLearning", false);
+        int step = mIsQuickMode ? 2: 1;
         SQLiteDatabase conn = Wordlist.openWordlistDb();
         conn.beginTransaction();
         String cmd;
@@ -142,11 +151,12 @@ public class WordlistDB {
         try {
             for (Pair<String, Boolean> one : answerList) {
                 if (one.second == true) {
-                    cmd = "update dict set tested = tested + 1, correct = correct + 1, continuous_correct = continuous_correct + 1, last_tested = ? where word = ?";
+                    cmd = "update dict set tested = tested + ?, correct = correct + ?, continuous_correct = continuous_correct + ?, last_tested = ? where word = ?";
+                    conn.execSQL(cmd, new Object[] {step, step, step, cntSecond, one.first});
                 } else {
-                    cmd = "update dict set tested = tested + 1, continuous_correct = max(0, continuous_correct - 1), last_tested = ? where word = ?";
+                    cmd = "update dict set tested = tested + ?, continuous_correct = max(0, continuous_correct - ?), last_tested = ? where word = ?";
+                    conn.execSQL(cmd, new Object[] {step, step, cntSecond, one.first});
                 }
-                conn.execSQL(cmd, new Object[] {cntSecond, one.first});
                 Log.d("lia", "sql update command");
             }
             conn.setTransactionSuccessful();

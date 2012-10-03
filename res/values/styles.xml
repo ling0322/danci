@@ -3,6 +3,18 @@
     <style name="StyledIndicators" parent="@android:style/Theme.Light">
 
     </style>
+    <declare-styleable name="ViewPagerIndicator">
+        <!-- Style of the circle indicator. -->
+        <attr name="vpiCirclePageIndicatorStyle" format="reference"/>
+        <!-- Style of the line indicator. -->
+        <attr name="vpiLinePageIndicatorStyle" format="reference"/>
+        <!-- Style of the title indicator. -->
+        <attr name="vpiTitlePageIndicatorStyle" format="reference"/>
+        <!-- Style of the tab indicator's tabs. -->
+        <attr name="vpiTabPageIndicatorStyle" format="reference"/>
+        <!-- Style of the underline indicator. -->
+        <attr name="vpiUnderlinePageIndicatorStyle" format="reference"/>
+    </declare-styleable>
     <style name="Anne" parent="android:style/Theme.Black.NoTitleBar"> 
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:background">#FFFFFF</item>
@@ -17,13 +29,32 @@
         <item name="android:textColor">#000000</item>
         <item name="android:fadingEdge">none</item>
     </style>
+    
+    <style name="Widget">
+    </style>
+    <style name="TextAppearance.TabPageIndicator" parent="Widget">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>    
+    <style name="Widget.TabPageIndicator" parent="Widget">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/vpi__tab_indicator</item>
+        <item name="android:paddingLeft">22dip</item>
+        <item name="android:paddingRight">22dip</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
     <style name="CustomTabPageIndicator.Text" parent="TextAppearance.TabPageIndicator">
         <item name="android:textColor">#FF888888</item>
         <item name="android:gravity">center</item>
+        
     </style>
     <style name="button_text_blue">
         <item name="android:layout_width">fill_parent</item>

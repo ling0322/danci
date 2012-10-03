@@ -22,13 +22,13 @@ public class DefinitionView {
     
     public static View getDefinitionView(Activity activity, String word, boolean onlyWord) {
         
-        Dictionary dict12Dict = Dictionary.getInstance();
-        String defiJson = dict12Dict.getDefinition(word.toLowerCase());
-        String pron = null;
-        String defi = null;
-        Speech speech = Speech.getInstance();
-        ArrayList<String> examplesOrig = new ArrayList<String>();
-        ArrayList<String> examplesTrans = new ArrayList<String>();
+        Dictionary dict = Dictionary.getInstance();
+        Dictionary.Word dictWord = dict.getDefinition(word);
+        String pron = dictWord.pron;
+        ArrayList<String> defi = dictWord.definitions;
+        ArrayList<String> examplesOrig = dictWord.examplesOrig;
+        ArrayList<String> examplesTrans = dictWord.examplesTrans;
+        
         if (lingoesFont == null) {
             lingoesFont = Typeface.createFromAsset(activity.getAssets(), "lingoes.ttf");
         }
@@ -37,19 +37,7 @@ public class DefinitionView {
         //
         // parse word pron, definition and examples from json
         //
-        try {
-            JSONObject json = new JSONObject(defiJson.toLowerCase());
-            pron = json.getString("pron");
-            defi = json.getString("def");
-            JSONArray jsonExamples = json.getJSONArray("example");
-            for (int i = 0; i < jsonExamples.length(); ++i) {
-                JSONObject jsonExample = jsonExamples.getJSONObject(i);
-                examplesOrig.add(jsonExample.getString("orig"));
-                examplesTrans.add(jsonExample.getString("trans"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         
         //
         // create scroll view
@@ -119,11 +107,10 @@ public class DefinitionView {
         //
         // defi text view
         //
-        if (defi != null) {
-            String[] defiLines = defi.split("\\\\n");
-            for (int i = 0; i < defiLines.length; ++i) {
+        if (defi != null && defi.size() != 0) {
+            for (String defiText : defi) {
                 TextView origView = new TextView(activity);
-                origView.setText(defiLines[i]);
+                origView.setText(defiText);
                 origView.setTextSize(16);
                 origView.setTextColor(0xFF000000);
                 ll.addView(origView);                        

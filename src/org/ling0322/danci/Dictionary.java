@@ -3,6 +3,9 @@ package org.ling0322.danci;
 import java.io.File;
 import java.util.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.database.*;
 import android.database.sqlite.*;
 import android.util.Log;
@@ -39,6 +42,14 @@ public class Dictionary {
 		return instance;
 	}
 	
+	public static class Word {
+	    public String word;
+	    public String pron;
+	    public ArrayList<String> definitions;
+	    public ArrayList<String> examplesOrig;
+	    public ArrayList<String> examplesTrans;
+	}
+	
 	private String getDefinitionFromDict(SQLiteDatabase dbDict, String word) {
 		String result;
 		Cursor c = dbDict.rawQuery(
@@ -56,11 +67,38 @@ public class Dictionary {
     	return result;
 	}
 	
-	public String getDefinition(String word) {
+	private Word jsonDefiToWord(String word, String jsonDefi) {
+        Word dictWord = new Word();
+        try {
+            dictWord.word = word;
+            JSONObject json = new JSONObject(jsonDefi.toLowerCase());
+            dictWord.pron = json.getString("pron");
+            
+            dictWord.definitions = new ArrayList<String>();
+            for (String defi : json.getString("def").split("\\\\n")) {
+                dictWord.definitions.add(defi);
+            }
+            
+            JSONArray jsonExamples = json.getJSONArray("example");
+            dictWord.examplesOrig = new ArrayList<String>();
+            dictWord.examplesTrans = new ArrayList<String>();
+            for (int i = 0; i < jsonExamples.length(); ++i) {
+                JSONObject jsonExample = jsonExamples.getJSONObject(i);
+                dictWord.examplesOrig.add(jsonExample.getString("orig"));
+                dictWord.examplesTrans.add(jsonExample.getString("trans"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dictWord;
+	}
+	
+	public Word getDefinition(String word) {
 	    for (SQLiteDatabase dbDict : dictDbList) {
-	        String defi = getDefinitionFromDict(dbDict, word);
-	        if (defi != null)
-	            return defi;
+	        String defiJson = getDefinitionFromDict(dbDict, word);
+	        if (defiJson != null) {
+	            return jsonDefiToWord(word, defiJson);
+	        }
 	    }
 	    return null;
 	}

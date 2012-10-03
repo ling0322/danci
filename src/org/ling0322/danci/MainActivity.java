@@ -1,6 +1,5 @@
 package org.ling0322.danci;
 
-import com.viewpagerindicator.TabPageIndicator;
 import android.content.*;
 import android.os.*;
 import android.util.Log;

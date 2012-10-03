@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_horizontal" >
@@ -7,7 +13,7 @@
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/wordlistItemWord"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="10dp"
@@ -22,4 +28,8 @@
         android:textSize="14sp"
         android:text=""
         android:textColor="#888888" />
+
+
     </LinearLayout>
+
+</LinearLayout>

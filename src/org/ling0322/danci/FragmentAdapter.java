@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.viewpagerindicator.*;
 
 public class FragmentAdapter extends FragmentPagerAdapter {
     public FragmentAdapter(FragmentManager fm) {

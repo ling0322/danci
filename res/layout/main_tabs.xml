@@ -20,9 +20,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.viewpagerindicator.TabPageIndicator
+    <org.ling0322.danci.TabPageIndicator
         android:id="@+id/indicator"
-        android:layout_height="54dp"
+        android:layout_height="48dp"
         android:layout_width="fill_parent"
         />
 

@@ -1,27 +1,38 @@
 package org.ling0322.danci;
 
 
-import android.app.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
-public class DefinitionActivity extends Activity {
+public class DefinitionActivity extends Activity implements OnClickListener {
+    private Button mBackButton;
+    private LinearLayout mDefinitionViewContainer;
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.definition);
 		
-		String word = getIntent().getExtras().getString("word");
-
+		mBackButton = (Button)findViewById(R.id.back_button);
+		mBackButton.setOnClickListener(this);
 		
-		View sv = DefinitionView.getDefinitionView(this, word);
-		LinearLayout ll = new LinearLayout(this);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-			LinearLayout.LayoutParams.FILL_PARENT,
-			LinearLayout.LayoutParams.FILL_PARENT);
-		lp.setMargins(16, 16, 16, 16);
-		ll.addView(sv);
-		sv.setLayoutParams(lp);
+		Intent it = this.getIntent();
+		String word = it.getStringExtra("word");
+		View definitionView = DefinitionView.getDefinitionView(this, word);
+		int scale = (int)getResources().getDisplayMetrics().density;
+		int paddingPx = 4 * scale;
 		
-		setContentView(ll);
+		definitionView.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
+		mDefinitionViewContainer = (LinearLayout)findViewById(R.id.definition_view);
+		mDefinitionViewContainer.addView(definitionView, new LinearLayout.LayoutParams(
+		    LinearLayout.LayoutParams.MATCH_PARENT,
+		    LinearLayout.LayoutParams.MATCH_PARENT));
+		
+    }
+    public void onClick(View arg0) {
+        finish();
     }
 }

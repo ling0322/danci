@@ -25,7 +25,7 @@
     <LinearLayout
         android:id="@+id/button_container"
         android:layout_width="fill_parent"
-        android:layout_height="75dp">
+        android:layout_height="68dp">
 
         <Button
             android:id="@+id/start_button"

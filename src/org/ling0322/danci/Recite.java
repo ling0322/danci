@@ -2,8 +2,10 @@ package org.ling0322.danci;
 
 import java.util.*;
 
+import android.content.SharedPreferences;
 import android.database.*;
 import android.database.sqlite.*;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -99,7 +101,6 @@ public class Recite {
         }
     }
     
-    @SuppressWarnings("unchecked")
     private void switchState() {
         if (wordList.size() == 0) {
             switch(cntState) {
