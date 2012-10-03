@@ -96,17 +96,7 @@ public class DefinitionView {
         if (onlyWord == true) {
             return sv;
         }
-        
-        //
-        // speak button
-        //
-        if (false == true) {
-            ImageView imageView = new ImageView(activity);
-            LinearLayout.LayoutParams lpSpeakImage = new LinearLayout.LayoutParams(48, 48);
-            imageView.setLayoutParams(lpSpeakImage);
-            imageView.setImageDrawable(activity.getResources().getDrawable(R.drawable.speak));
-            ll.addView(imageView);
-        }
+       
         
         //
         // set the definition indicator text view
