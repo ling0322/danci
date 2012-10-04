@@ -70,12 +70,13 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
         currentPage = Math.min(currentPage, pageMax - 1);
         if (pageMax == 1) {
             buttonContainer.setVisibility(View.GONE);
-            progress.setText(String.format("生词本 - 共%d个", reviewCount));
+            progress.setText(String.format("生词本-共%d个", reviewCount));
         } else {
             buttonContainer.setVisibility(View.VISIBLE);
-            progress.setText(String.format("生词本 - 共%d个 － 第%d页/共%d页", reviewCount, currentPage + 1, pageMax));
+            progress.setText(String.format("生词本-共%d个-第%d页/共%d页", reviewCount, currentPage + 1, pageMax));
         }
         wordlist.clear();
+        remainsList.clear();
         Pair<ArrayList<String>, ArrayList<Integer>> pair = wldb.reviewListAll(
                 Config.REVIEWLIST_WORDS_PER_PAGE, currentPage);
         wordlist.addAll(pair.first);
@@ -96,7 +97,7 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
     }
 
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-        int wordIndex = position + currentPage * Config.REVIEWLIST_WORDS_PER_PAGE;
+        int wordIndex = position;
         Intent it = new Intent(getActivity(), DefinitionActivity.class);
         it.putExtra("word", wordlist.get(wordIndex));
         getActivity().startActivity(it);

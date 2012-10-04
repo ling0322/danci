@@ -18,15 +18,20 @@
             android:layout_margin="3dp"
             android:layout_weight="0.34"
             android:background="@drawable/progress_view" />
-
+
         <TextView
             android:id="@+id/review_remains"
             style="@style/progress_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:text="剩余复习次数"
-            android:background="@drawable/progress_view" />
+            android:layout_gravity="center_vertical"
+            android:paddingRight="6dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:background="@drawable/progress_view"
+            android:text="剩余复习次数" />
+
     </LinearLayout>
     
     <ListView

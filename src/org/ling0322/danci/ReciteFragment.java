@@ -207,8 +207,12 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
 
     @Override 
     public boolean onBackKey() {
+        if (recite.isFinsihed() == true) {
+            System.exit(0);
+        }
+        
         Dialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AnneDialog))
-            .setMessage("确定要退出吗?")
+            .setMessage("单词还没有背完, 确定要退出吗?")
             .setPositiveButton("退出", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface arg0, int arg1) {
                     System.exit(0);
