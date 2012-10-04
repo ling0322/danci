@@ -97,7 +97,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     
     private void showWordDefi(String word, boolean hideDefi) {
         int scale = (int)getResources().getDisplayMetrics().density;
-        int paddingPx = 5 * scale;
+        int paddingPx = 8 * scale;
         
         
         View v = DefinitionView.getDefinitionView(getActivity(), word, hideDefi);
@@ -106,7 +106,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT
             );
-        containerView.setPadding(paddingPx, 0, paddingPx, 0);
+        v.setPadding(paddingPx, 0, paddingPx, 0);
         v.setLayoutParams(lp);
         containerView.removeAllViews();
         containerView.addView(v);    

@@ -18,13 +18,12 @@ class UpdateDatabase implements Runnable {
 
 public class Recite {
 
-    public final int NEW_WORD_PER_UNIT = 30;
-    public final int REVIEW_WORD_PER_UNIT = 30;
-    
     private final int ST_FINISHED = 0;
     private final int ST_NEW = 1;
     private final int ST_REVIEW = 2;
     private final int ST_DRILL = 3;
+    
+    private int mWordsPerUnit = 30;
 
     private Thread updateThread;
     private ArrayList<String> wordList = new ArrayList<String>();
@@ -33,8 +32,8 @@ public class Recite {
     private int cntState = ST_FINISHED;
     private String cntWord = "";
     private int totalWord = -1;
-    private int newWordCount = 0;
-    private int reviewWordCount = 0;
+    private int mNewWordCount = 0;
+    private int mReviewWordCount = 0;
     private WordlistDB wldb;
     private ArrayList<Pair<String, Boolean>> answerList;
     
@@ -68,9 +67,9 @@ public class Recite {
                 (int)((totalWord - unpass) * 100 / totalWord)
                 );
         case ST_NEW:
-            return String.format("开始→[新单词 - %d/%d]→复习→巩固", wordList.size(), newWordCount);
+            return String.format("开始→[新单词 - %d/%d]→复习→巩固", wordList.size(), mNewWordCount);
         case ST_REVIEW:
-            return String.format("开始→新单词→[复习 - %d/%d]→巩固", wordList.size(), reviewWordCount);
+            return String.format("开始→新单词→[复习 - %d/%d]→巩固", wordList.size(), mReviewWordCount);
         case ST_DRILL:
             return String.format("开始→新单词→复习→[巩固 - %d]", wordList.size());
         }
@@ -83,14 +82,22 @@ public class Recite {
     }
     
     public void start() {
-        int reviewWords = wldb.reviewCount();
+        
         if (cntState == ST_FINISHED) {
             cntState = ST_NEW;
+            
+            //
+            // calculate new word and review word numbers
+            //
+            double reviewWords = wldb.reviewCount();
+            double reviewWordsNumber = Math.atan(reviewWords / 80) * mWordsPerUnit * 2 / Math.PI;
+            mNewWordCount = mWordsPerUnit - (int)reviewWordsNumber;
+            
             wordList.clear();
-            if (reviewWords < 300) {
-                wordList = wldb.newWordList(NEW_WORD_PER_UNIT - (int)(reviewWords / 10));
-                newWordCount = wordList.size();
-            }
+            wordList = wldb.newWordList(mNewWordCount);
+            mNewWordCount = wordList.size();
+            mReviewWordCount = mWordsPerUnit - mNewWordCount;
+            
             switchState();
         }
     }
@@ -99,8 +106,8 @@ public class Recite {
         if (wordList.size() == 0) {
             switch(cntState) {
             case ST_NEW:
-                wordList = wldb.reviewList(REVIEW_WORD_PER_UNIT);
-                reviewWordCount = wordList.size();
+                wordList = wldb.reviewList(mReviewWordCount);
+                mReviewWordCount = wordList.size();
                 cntState = ST_REVIEW;
                 switchState();
                 break;

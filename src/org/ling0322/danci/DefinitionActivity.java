@@ -23,7 +23,7 @@ public class DefinitionActivity extends Activity implements OnClickListener {
 		String word = it.getStringExtra("word");
 		View definitionView = DefinitionView.getDefinitionView(this, word);
 		int scale = (int)getResources().getDisplayMetrics().density;
-		int paddingPx = 5 * scale;
+		int paddingPx = 8 * scale;
 		
 		definitionView.setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
 		mDefinitionViewContainer = (LinearLayout)findViewById(R.id.definition_view);

@@ -85,7 +85,7 @@ public class WordlistDB {
         for (int i = 0; i < c.getCount(); ++i) {
             reviewWords.add(c.getString(0));
             remainsList.add((int)Math.ceil(
-                ((REVIEW_TIMES - c.getInt(1)) / (float)step)));
+                ((REVIEW_TIMES - c.getInt(1)) / (double)step)));
             c.moveToNext();
         }
         c.close();
@@ -178,11 +178,19 @@ public class WordlistDB {
         return totalWord;
     }
     
+    //
+    // if not use static variable mIsNullDb, it may case database lock exception when update 
+    // reciting result in the update thread and call this function in the main thread  
+    //
+    private static boolean mIsNullDb = true;
     public boolean isNullDbConn() {
+        if (mIsNullDb == false)
+            return false;
         SQLiteDatabase conn = Wordlist.openWordlistDb();
         if (conn == null)
             return true;
         
+        mIsNullDb = false;
         conn.close();
         return false;
     }
