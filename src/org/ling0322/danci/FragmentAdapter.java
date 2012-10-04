@@ -1,11 +1,7 @@
 package org.ling0322.danci;
 
-import java.util.ArrayList;
-
 import android.support.v4.app.*;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 
 
 public class FragmentAdapter extends FragmentPagerAdapter {

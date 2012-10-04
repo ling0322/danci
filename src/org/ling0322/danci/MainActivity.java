@@ -4,7 +4,6 @@ import android.content.*;
 import android.os.*;
 import android.util.Log;
 import android.view.*;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.support.v4.app.*;

@@ -28,8 +28,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * This widget implements the dynamic action bar tab behavior that can change
@@ -83,7 +81,9 @@ public class TabPageIndicator extends HorizontalScrollView implements OnPageChan
         setHorizontalScrollBarEnabled(false);
 
         mTabLayout = new LinearLayout(getContext());
-        addView(mTabLayout, new ViewGroup.LayoutParams(WRAP_CONTENT, FILL_PARENT));
+        addView(mTabLayout, new ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, 
+            ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     public void setOnTabReselectedListener(OnTabReselectedListener listener) {
@@ -156,7 +156,7 @@ public class TabPageIndicator extends HorizontalScrollView implements OnPageChan
         tabView.setOnClickListener(mTabClickListener);
         tabView.setText(text);
 
-        mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, FILL_PARENT, 1));
+        mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
     }
 
     public void onPageScrollStateChanged(int arg0) {

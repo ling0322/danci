@@ -1,12 +1,6 @@
 package org.ling0322.danci;
 
 import java.util.*;
-
-import android.content.SharedPreferences;
-import android.database.*;
-import android.database.sqlite.*;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.Pair;
 
 class UpdateDatabase implements Runnable {

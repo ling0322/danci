@@ -5,12 +5,9 @@ import java.io.*;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.*;
 import android.os.Bundle;
 import android.preference.*;
-import android.support.v4.app.*;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -99,14 +96,17 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     }
     
     private void showWordDefi(String word, boolean hideDefi) {
-        int screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+        int scale = (int)getResources().getDisplayMetrics().density;
+        int paddingPx = 5 * scale;
+        
+        
         View v = DefinitionView.getDefinitionView(getActivity(), word, hideDefi);
         LinearLayout containerView = (LinearLayout)getActivity().findViewById(R.id.word_defi_view);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.FILL_PARENT,
-            LinearLayout.LayoutParams.FILL_PARENT
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
             );
-        lp.setMargins(screenWidth / 40, 0, screenWidth / 40, 0);
+        containerView.setPadding(paddingPx, 0, paddingPx, 0);
         v.setLayoutParams(lp);
         containerView.removeAllViews();
         containerView.addView(v);    

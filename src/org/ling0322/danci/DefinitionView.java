@@ -3,7 +3,6 @@ package org.ling0322.danci;
 
 import java.util.*;
 
-import org.json.*;
 
 import android.app.*;
 import android.graphics.*;
@@ -50,8 +49,8 @@ public class DefinitionView {
         LinearLayout ll = new LinearLayout(activity);
         ll.setOrientation(LinearLayout.VERTICAL);
         ScrollView.LayoutParams lp = new ScrollView.LayoutParams(
-            LinearLayout.LayoutParams.FILL_PARENT, 
-            LinearLayout.LayoutParams.FILL_PARENT
+            LinearLayout.LayoutParams.MATCH_PARENT, 
+            LinearLayout.LayoutParams.MATCH_PARENT
             );
         lp.setMargins(0, 0, 0, 0);
         lp.gravity = Gravity.FILL_HORIZONTAL;
@@ -96,7 +95,7 @@ public class DefinitionView {
             defIndicatorView.setTextColor(0xFF000000);
             defIndicatorView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.definition_indicatoir));
             LinearLayout.LayoutParams lpIndic = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT, 
+                LinearLayout.LayoutParams.MATCH_PARENT, 
                 LinearLayout.LayoutParams.WRAP_CONTENT
                 );
             lpIndic.setMargins(0, 8, 0, 8);
@@ -124,7 +123,7 @@ public class DefinitionView {
             examplesView.setTextColor(0xFF000000);
             examplesView.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.definition_indicatoir));
             LinearLayout.LayoutParams lpIndic = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT, 
+                LinearLayout.LayoutParams.MATCH_PARENT, 
                 LinearLayout.LayoutParams.WRAP_CONTENT
                 );
             lpIndic.setMargins(0, 16, 0, 8);
