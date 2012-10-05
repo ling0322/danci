@@ -61,19 +61,18 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020009;
         public static final int ic_recite=0x7f02000a;
         public static final int ic_tran=0x7f02000b;
-        public static final int icon=0x7f02000c;
-        public static final int navigator=0x7f02000d;
-        public static final int navigator_blue=0x7f02000e;
-        public static final int progress_view=0x7f02000f;
-        public static final int recite_grey=0x7f020010;
-        public static final int recite_white=0x7f020011;
-        public static final int setting_menu=0x7f020012;
-        public static final int speak=0x7f020013;
-        public static final int tran_grey=0x7f020014;
-        public static final int tran_white=0x7f020015;
-        public static final int vpi__tab_indicator=0x7f020016;
-        public static final int vpi__tab_selected=0x7f020017;
-        public static final int vpi__tab_unselected=0x7f020018;
+        public static final int navigator=0x7f02000c;
+        public static final int navigator_blue=0x7f02000d;
+        public static final int progress_view=0x7f02000e;
+        public static final int recite_grey=0x7f02000f;
+        public static final int recite_white=0x7f020010;
+        public static final int setting_menu=0x7f020011;
+        public static final int speak=0x7f020012;
+        public static final int tran_grey=0x7f020013;
+        public static final int tran_white=0x7f020014;
+        public static final int vpi__tab_indicator=0x7f020015;
+        public static final int vpi__tab_selected=0x7f020016;
+        public static final int vpi__tab_unselected=0x7f020017;
     }
     public static final class id {
         public static final int back_button=0x7f0a0003;
