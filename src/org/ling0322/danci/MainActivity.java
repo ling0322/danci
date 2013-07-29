@@ -1,5 +1,6 @@
 package org.ling0322.danci;
 
+import android.app.Activity;
 import android.content.*;
 import android.os.*;
 import android.util.Log;
@@ -17,6 +18,7 @@ public class MainActivity
     private ViewPager mPager = null;
     private TabPageIndicator mIndicator = null;
     private FragmentAdapter mAdapter;
+    public final static int PREFERENCE_REQUEST_ID = 233;
     
     public FragmentAdapter getFragmentAdapter() {
     	return mAdapter;
@@ -58,7 +60,7 @@ public class MainActivity
         switch (item.getItemId()) {
         case Menu.FIRST:
             Intent it = new Intent(this, LiaPreferencesActivity.class);
-            startActivity(it);
+            startActivityForResult(it, PREFERENCE_REQUEST_ID);
             break;
         case Menu.FIRST + 1:
             System.exit(0);
@@ -124,6 +126,30 @@ public class MainActivity
         // close input method when switch fragments
         //
         // closeIME();
+    }
+    
+    public void refresh() {
+        mPager.setCurrentItem(1);
+        mIndicator.setCurrentItem(1);
+        for (int i = 0; i < mAdapter.getCount(); ++i)
+            mAdapter.getItem(i).onRefresh();
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        
+        switch (requestCode) {
+        case PREFERENCE_REQUEST_ID:
+            if (resultCode != Activity.RESULT_OK)
+                return ;
+            
+            Bundle b = data.getExtras();
+
+            boolean needsRefresh = b.getBoolean("bNeedsRefresh");
+            if (needsRefresh == true) {
+                refresh();
+            }
+        }
     }
 
     public void onPageScrolled(int arg0, float arg1, int arg2) {

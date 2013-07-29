@@ -53,6 +53,7 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
         wldb = new WordlistDB();
         if (wldb.isNullDbConn() == true) {
             buttonContainer.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.review_remains).setVisibility(View.GONE);
             return ;
         }
         refleshList();
@@ -93,6 +94,12 @@ public class ReviewListFragment extends CustomFragment implements OnClickListene
             currentPage = (currentPage + pageMax - 1) % pageMax;
             refleshList();
         }   
+    }
+    
+    @Override
+    public boolean onRefresh() {
+        refleshList();
+        return true;
     }
 
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {

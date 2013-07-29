@@ -1,26 +1,29 @@
 package org.ling0322.danci;
 
 import java.io.File;
+import java.util.Locale;
 
+import android.app.Activity;
 import android.media.MediaPlayer;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 
-public class Speech {
-    private Speech() {
+class Mp3Speech {
+    private Mp3Speech() {
         File speech = new File(Config.SPEECH_PATH.concat("/A"));
-        speechLibExists = speech.exists();
-        
-        mediaPlayer = new MediaPlayer();
+        mSpeechLibExists = speech.exists();
+        mMediaPlayer = new MediaPlayer();
     }
     
-    private static Speech instance = null;
-    private MediaPlayer mediaPlayer;
+    private static Mp3Speech mInstance = null;
+    private MediaPlayer mMediaPlayer;
     
-    public static Speech getInstance() {
-        if (instance == null)
-            instance = new Speech();
+    public static Mp3Speech getInstance() {
+        if (mInstance == null)
+            mInstance = new Mp3Speech();
         
-        return instance;
+        return mInstance;
     }
     
     public void speak(String word) {
@@ -29,14 +32,14 @@ public class Speech {
             if (speechFile == null)
                 return;
             
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
             }
-            mediaPlayer.reset();
-            mediaPlayer.setVolume(1, 1);
-            mediaPlayer.setDataSource(speechFile.getAbsolutePath());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
+            mMediaPlayer.reset();
+            mMediaPlayer.setVolume(1, 1);
+            mMediaPlayer.setDataSource(speechFile.getAbsolutePath());
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
             
         } catch (Exception e) {
             Log.d("speech", String.format("speak word %s failed", word));
@@ -62,8 +65,31 @@ public class Speech {
             return null;
     }
     
-    private boolean speechLibExists;
+    private boolean mSpeechLibExists;
     public boolean speechLibExists() {
-        return speechLibExists;
+        return mSpeechLibExists;
+    }
+}
+
+class Speech implements OnInitListener {
+    private TextToSpeech mTextToSpeech;
+    private boolean mIsAvailable = false;
+
+    public Speech(Activity activity) {
+        mTextToSpeech = new TextToSpeech(activity, this);
+    }
+    
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int supported = mTextToSpeech.setLanguage(Locale.US);
+            if (supported > 0)
+                mIsAvailable = true;
+        }
+    }
+    
+    public void speak(String word) {
+        if (mIsAvailable == true) {
+            mTextToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 }

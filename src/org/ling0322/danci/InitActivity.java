@@ -26,7 +26,7 @@ class CheckUsefulFiles implements Runnable {
     		OutputStream out = new FileOutputStream(fp);
     		InputStream in = activity.getAssets().open(from);
     		byte [] buf = new byte[8192];
-    		sendDisplayMessage(String.format("少女祈祷中, 请稍等 %s", from));
+    		sendDisplayMessage(String.format("初始化中, 请稍等 %s", from));
     		while (-1 != in.read(buf)) {
     			out.write(buf);
     		}
@@ -59,7 +59,7 @@ class CheckUsefulFiles implements Runnable {
 		        		"insert into dict(word, definition) values(?, ?)",
 		        		sp);
 		        }
-			    sendDisplayMessage(String.format("少女祈祷中, 请稍等 dict-12-v2 %d/%d", i, Config.DICT_12_PARTS));
+			    sendDisplayMessage(String.format("初始化中, 请稍等 dict-12-v2 %d/%d", i, Config.DICT_12_PARTS));
 		    }
 		    conn.setTransactionSuccessful();
 		} finally {

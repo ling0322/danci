@@ -10,4 +10,8 @@ public class CustomFragment extends Fragment {
     
     public void onPageSelected() {
     }
+    
+    public boolean onRefresh() {
+        return false;
+    }
 }

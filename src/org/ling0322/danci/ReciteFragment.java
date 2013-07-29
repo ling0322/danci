@@ -1,14 +1,11 @@
 package org.ling0322.danci;
 
-import java.io.*;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
-import android.media.*;
 import android.os.Bundle;
 import android.preference.*;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +25,8 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     private Button nextButton;
     private Button initButton;
     
-    private MediaPlayer mp;
-    private SharedPreferences prefs;
     private MainActivity mainActivity;
+    private Speech mSpeech;
     
     public ReciteFragment() {
     	
@@ -70,26 +66,6 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     private final int SECOND = 1;    
     private int state = FIRST;
     
-    private void speech(String word) {
-        File speechFile = new File(String.format("%s/%c/%s.mp3", Config.SPEECH_PATH, word.charAt(0), word));
-        if (speechFile.exists() == false)
-            return ;
-        
-        try {
-            if (mp.isPlaying()) {
-                mp.stop();
-            }
-            mp.reset();
-            mp.setVolume(1, 1);
-            mp.setDataSource(speechFile.getAbsolutePath());
-            mp.prepare();
-            mp.start();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void recitingFinish() {
         recite.finish();
         updateDiaplay();
@@ -128,33 +104,24 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     private void updateDiaplay() {
         if (true == recite.isNullDbConn())
             return ;
-        String reciting_mode = prefs.getString("reciting_mode", "word_to_definition");
-        Log.i("lia", reciting_mode);
+        
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         boolean speech = prefs.getBoolean("auto_speech", false);
         ((LinearLayout)getActivity().findViewById(R.id.word_defi_view)).removeAllViews();
+        
         if (recite.isFinsihed()) {
             ((ReviewListFragment)mainActivity.getFragmentAdapter().getItem(2)).refleshList();
             showStartButton();
-            TextView t = (TextView)getActivity().findViewById(R.id.textView1);
-            t.setText(recite.getCntState());
-            return ;
-        }
-        if (state == FIRST) {
-            if (reciting_mode.equals("word_to_definition")) {
-                if (speech == true) {
-                    speech(recite.pickWord());
-                }
-                showWordDefi(recite.pickWord(), true);
-            } else {
-                showWordDefi(recite.pickWord(), true);       
+        } else if (state == FIRST) {
+            if (speech == true) {
+                mSpeech.speak(recite.pickWord());
             }
-
+            showWordDefi(recite.pickWord(), true);
         } else if (state == SECOND) {
-            if (reciting_mode.equals("definition_to_word")) {
-                speech(recite.pickWord());
-            }
+
             showWordDefi(recite.pickWord(), false);
         }
+        
         TextView tv = (TextView)getActivity().findViewById(R.id.textView1);
         tv.setText(recite.getCntState());
     }
@@ -162,8 +129,18 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     private void onStartButtonClicked() {
         state = FIRST;
         recite.start();
-        showTestButtons();
-        updateDiaplay();
+        if (recite.isFinsihed() == true) {
+            Dialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AnneDialog))
+            .setMessage("今天的单词都背完了哦，明天继续复习吧:)")
+            .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                }                    
+            }).create();
+            dialog.show(); 
+        } else {
+            showTestButtons();
+            updateDiaplay();
+        }
     }
     
     private void onYesButtonClicked() {
@@ -201,8 +178,8 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mSpeech = new Speech(getActivity());
         return inflater.inflate(R.layout.recite, container, false);
-
     }
 
     @Override 
@@ -225,10 +202,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
         dialog.show(); 
         return true;
     }
-    public void onDetach() {
-        super.onDetach();
 
-    }
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -254,29 +228,23 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
         
         if (recite.isNullDbConn() == true) {
             t.setText("单词喵喵喵: 请先选择一个的单词表");
-            startButton.setVisibility(View.GONE);
-            yesButton.setVisibility(View.GONE);
-            noButton.setVisibility(View.GONE);
-            nextButton.setVisibility(View.GONE);
+            LinearLayout la = (LinearLayout)getActivity().findViewById(R.id.button_container);
+            la.removeAllViews();
+            la.addView(initButton);
             return ;
         }
             
 
         t.setText(recite.getCntState());
-        //
-        // the player to play speech audio
-        //
-        mp = new MediaPlayer();
-        //
-        // get some preference data
-        //
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        
-
-
         showStartButton();
-        
-        
+    }
+    
+    @Override 
+    public boolean onRefresh() {
+        recite = new Recite();
+        showStartButton();
+        updateDiaplay();
+        return false;
     }
     
     public void onClick(View arg0) {
@@ -295,7 +263,7 @@ public class ReciteFragment extends CustomFragment implements OnClickListener {
             break;
         case R.id.init_button:
             Intent it = new Intent(getActivity(), LiaPreferencesActivity.class);
-            startActivity(it);
+            getActivity().startActivityForResult(it, MainActivity.PREFERENCE_REQUEST_ID);
         }
     }
 }

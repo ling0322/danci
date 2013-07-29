@@ -62,8 +62,8 @@
 
         <Button
             android:id="@+id/init_button"
-            android:background="@drawable/btn_red"
-            style="@style/button_text_red"
+            android:background="@drawable/btn_blue"
+            style="@style/button_text_blue"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0.5"

@@ -100,7 +100,14 @@ public class Dictionary {
 	            return jsonDefiToWord(word, defiJson);
 	        }
 	    }
-	    return null;
+	    //
+	    // else return a word without definition and any other things
+	    //
+	    Word w = new Word();
+	    w.word = word;
+        w.examplesOrig = new ArrayList<String>();
+        w.examplesTrans = new ArrayList<String>();
+	    return w;
 	}
 	
 	private ArrayList<String> getWordListFromDict(SQLiteDatabase dbDict, String word) {
