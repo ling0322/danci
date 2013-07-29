@@ -3,17 +3,6 @@
 
     <string name="hello">Hello World, LiaActivity!</string>
     <string name="app_name">单词喵喵喵</string>
-    
-    
-    <string-array name="reciting_mode_title">
-        <item>Word -> Definition</item>
-        <item>Definition -> Word</item> 
-    </string-array>
-
-    <string-array name="reciting_mode_value">
-        <item>word_to_definition</item>
-        <item>definition_to_word</item>
-    </string-array>
 
     <string-array name="wordlists">
         <item>英语四级(CET-4)</item>

@@ -31,7 +31,7 @@ public class MainActivity
         //
         super.onCreate(new Bundle());
         setContentView(R.layout.main_tabs);
-        
+
         Config.mainInstance = this;
         
         mAdapter = new FragmentAdapter(getSupportFragmentManager());
